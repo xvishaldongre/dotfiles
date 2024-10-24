@@ -1,0 +1,122 @@
+
+
+import = [
+    "~/.config/alacritty/themes/themes/one_dark.toml"
+   #"~/.config/alacritty/catppuccin-mocha.toml"
+]
+
+# [shell]
+# program = "/bin/bash"
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 14.0
+
+[font.bold]
+family = "FiraCode Nerd Font Mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "FiraCode Nerd Font Mono"
+style = "Bold Italic"
+
+[font.italic]
+family = "FiraCode Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "FiraCode Nerd Font Mono"
+style = "Regular"
+
+
+
+# draw_bold_text_with_bright_colors = false
+# custom_cursor_colors = true
+# live_config_reload = true
+
+[window]
+dynamic_padding = false
+# decorations = "buttonless"
+decorations = "Transparent"
+startup_mode = "Windowed"
+opacity = 0.9
+blur = true
+dynamic_title = true
+
+
+[window.dimensions]
+columns = 125
+lines = 40
+
+[window.padding]
+x = 8
+y = 30
+
+# [scrolling]
+# history = 100000
+# multiplier = 3
+
+[bell]
+animation = "EaseOutExpo"
+color = "0xffffff"
+duration = 0
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Command"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Command"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "Q"
+mods = "Command"
+action = "Quit"
+
+[[keyboard.bindings]]
+key = "N"
+mods = "Command"
+action = "SpawnNewInstance"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Command"
+action = "ToggleFullscreen"
+
+[mouse]
+hide_when_typing = true
+
+# [mouse.double_click]
+# threshold = 300
+
+# [mouse.triple_click]
+# threshold = 300
+
+[selection]
+semantic_escape_chars = ",│`|:\"' ()[]{}<>"
+save_to_clipboard = false
+
+[[mouse.bindings]]
+mouse = "Middle"
+action = "PasteSelection"
+
+[cursor]
+style = "Block"
+unfocused_hollow = true
+
+[debug]
+render_timer = false
+persistent_logging = false
+log_level = "OFF"
+print_events = false
+# ref_test = false
+
+# [shell]
+# args = [ "--command=tmux" ]
+
+

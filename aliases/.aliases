@@ -1,0 +1,191 @@
+function ti() {
+    local selected_task
+    local args
+
+    # Use fzf to select a task
+    selected_task=$(task -g --list-all | awk -F ' # ' '{printf "%-20s\t%s\n", $1, $2}' | sed 's/^*//' | sort | fzf --ansi -m --reverse --preview 'echo {} | awk -F ":" '\''{print $1 ":" $2}'\'' | xargs task --summary' | xargs echo | awk -F ":" '{print $1 ":" $2}')
+    # Check if a task is selected
+    if [ -n "$selected_task" ]; then
+        # Prompt for arguments
+        read -rp "'$selected_task'" args
+
+        # Execute the selected task with arguments
+        task -g "$selected_task" -- "$args"
+    fi
+}
+
+## Kubernetes Aliases
+alias k='kubectl'
+alias kc="kubectl-ctx"
+alias kn="kubens"
+
+# function ksd() { 
+#     cmd="kgsec | fzf | awk '{print \$1}' | xargs -I {} kubectl get secret {} -o json | jq \".data | map_values(@base64d)\""; 
+#     echo $cmd; 
+#     eval $cmd; 
+# }
+
+# Function to execute a shell in a Kubernetes pod with optional pod name and namespace
+ke() {
+  local pod="${1:-psql}"    # Default pod name is 'psql'
+  local ns="${2:-default}"  # Default namespace is 'default'
+  
+  # Try to start bash, if not available, try ash, if not available, try sh
+  kubectl exec -i -t -n "$ns" "$pod" -- sh -c 'bash || ash || sh || echo "No shell available"'
+}
+
+
+kei() {
+  kubectl get pods -A | tail -n +2 | grep -i running | fzf | awk '{print $1, $2}' | read namespace pod_name; 
+  # Try to start bash, if not available, try ash, if not available, try sh
+  cmd="kubectl exec -i -t -n $namespace $pod_name -- sh -c 'bash || ash || sh || echo \"No shell available\"'"
+  echo $cmd
+  eval $cmd
+  unset namespace pod_name
+}
+
+
+
+ksd() {
+    # # Get the selected secret from all namespaces
+    # selected_secret=$(kubectl get secret -A | fzf | awk '{print $1, $2}')
+    
+    # # Extract namespace and secret name
+    # namespace=$(echo "$selected_secret" | awk '{print $1}')
+    # secret_name=$(echo "$selected_secret" | awk '{print $2}')
+
+    # cmd="kubectl get secret -A | fzf | awk '{print $1, $2}' | read namespace secret_name | kubectl get secret $secret_name -n $namespace -o json | jq \".data | map_values(@base64d)\""
+    # # Fetch and decode the secret
+
+
+    kubectl get secret -A | tail -n +2 | fzf | awk '{print $1, $2}' | read namespace secret_name; 
+    cmd="kubectl get secret $secret_name -n $namespace -o json | jq \".data | map_values(@base64d)\""
+    echo $cmd
+    eval $cmd
+    unset namespace secret_name
+}
+
+
+alias i=ksd
+
+asd() {
+    # Prompt for AWS profile
+    read -p "Enter AWS profile: " aws_profile
+
+    # Get the list of secrets using the specified profile
+    secrets=$(aws secretsmanager list-secrets --profile "$aws_profile" --query 'SecretList[*].Name' --output yaml)
+    
+    # Select a secret interactively
+    selected_secret=$(echo "$secrets" | fzf | awk '{print $2}')
+    
+    # Fetch the secret value
+    secret_value=$(aws secretsmanager get-secret-value --profile "$aws_profile" --secret-id "$selected_secret" --query 'SecretString' --output text)
+    
+    # Output the secret value
+    echo "$secret_value" | jq
+}
+
+ksall() {
+  # Define the namespaces to ignore
+  ignore_namespaces=(
+    "cert-manager"
+    "datadog"
+    "istio-system"
+    "keda"
+    "kube-federation-system"
+    "kube-node-lease"
+    "kube-public"
+    "kube-system"
+    "kubesphere-controls-system"
+    "kubesphere-monitoring-federated"
+    "kubesphere-monitoring-system"
+    "kubesphere-system"
+    "traefik"
+    "traefik-private"
+    "traefik-tls"
+    "castai-agent"
+    "cattle-fleet-system"
+    "cattle-impersonation-system"
+    "cattle-system"
+    "cert-manager"
+    "chaos-mesh"
+    "cis-testing"
+    "cloudflare-exporter"
+  )
+
+  # List all namespaces
+  namespaces=$(kubectl get namespaces --no-headers -o custom-columns=":metadata.name")
+  namesapces="confluent"
+
+  # Iterate over each namespace
+  for namespace in $namespaces; do
+    # Check if the namespace is in the ignore list
+    if [[ " ${ignore_namespaces[@]} " =~ " ${namespace} " ]]; then
+      echo "Skipping namespace $namespace..."
+      continue
+    fi
+
+    echo "Processing namespace $namespace..."
+
+    # Fetch and process all Opaque secrets in the current namespace
+    kubectl get secrets -n "$namespace" --no-headers -o custom-columns=":metadata.name,:type" | grep "Opaque" | while read -r secret_name _; do
+      echo "Fetching secret $secret_name in namespace $namespace..."
+      kubectl get secret -n "$namespace" "$secret_name" -o go-template='
+{{- if eq .type "Opaque" }}
+## Secret: {{ .metadata.name }}
+{{- range $k, $v := .data }}
+{{ $k }}: {{ if $v }}{{ $v | base64decode }}{{ else }}{{ $v }}{{ end }}
+{{- end }}
+{{- end }}
+' >> all_creds.md
+    done
+  done
+
+  echo "All secrets have been written to all_creds.md"
+}
+
+
+# Example usage
+# ksallk
+
+
+# Example usage
+# fetch_secret
+
+
+
+alias s="aws sso login --profile coindcx-staging"
+alias sv='sudoedit'
+alias tm='tmux'
+alias e='exit'
+alias syu='sudo pacman -Syu'
+alias c="clear"
+alias v='nvim'
+alias vim=nvim
+alias c='code'
+alias eb='code ~/.bash_profile'
+alias sb='source ~/.bash_profile'
+
+alias g='grep --color -iE'
+## Taskfile
+alias t='task'
+alias tl='task -g --list-all'
+alias hdu="helm dep up"
+alias ht="helm template ."
+alias tf="terraform"
+alias tfi="terraform init"
+alias tfp="terraform plan"
+alias tfa="terraform apply"
+alias tfd="terraform destroy"
+alias terragrunt="/Users/vishal.dongre/bin/terragrunt"
+alias tg="/Users/vishal.dongre/bin/terragrunt --terragrunt-provider-cache --terragrunt-provider-cache-dir ~/.tg/cache --terragrunt-download-dir ~/.tg/downloads --terragrunt-include-external-dependencies"
+alias tgi="/Users/vishal.dongre/bin/terragrunt init --terragrunt-provider-cache --terragrunt-provider-cache-dir ~/.tg/cache --terragrunt-download-dir ~/.tg/downloads --terragrunt-include-external-dependencies"
+alias tgp="/Users/vishal.dongre/bin/terragrunt plan --terragrunt-provider-cache --terragrunt-provider-cache-dir ~/.tg/cache --terragrunt-download-dir ~/.tg/downloads --terragrunt-include-external-dependencies"
+alias tga="/Users/vishal.dongre/bin/terragrunt apply --terragrunt-provider-cache --terragrunt-provider-cache-dir ~/.tg/cache --terragrunt-download-dir ~/.tg/downloads --terragrunt-include-external-dependencies"
+alias tgd="/Users/vishal.dongre/bin/terragrunt destroy --terragrunt-provider-cache --terragrunt-provider-cache-dir ~/.tg/cache --terragrunt-download-dir ~/.tg/downloads --terragrunt-include-external-dependencies"
+
+
+
+cheat() {
+    curl "cht.sh/$1"
+}
