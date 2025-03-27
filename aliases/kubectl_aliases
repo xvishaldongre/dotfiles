@@ -91,3 +91,17 @@ kdy() {
     kubectl get deployment "$deployment" -n "$namespace" -o yaml | kubectl neat > "${deployment}_${namespace}.yaml"
   done
 }
+
+kf() {
+  local resource=${2:-pods}  # Default to 'pods' if no second argument is provided
+  if [[ -z "$2" ]]; then
+    resource="pods"
+  fi
+  kubectl get "$resource" -A | grep -iE "$1"
+}
+
+alias kfp='kf'
+alias kfd='kf "" deployments'
+alias kfs='kf "" services'
+alias kfi='kf "" ingresses'
+alias kfc='kf "" configmaps'
