@@ -92,7 +92,7 @@ layout {
 
     default_tab_template {
         pane size=2 borderless=true {
-            plugin location="file:dotfiles/zellij/plugins/zjstatus.wasm" {
+            plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
                 // Catppuccin Macchiato theme colors               
                 color_fg "#6C7086" 
                 color_bg "none"
@@ -107,7 +107,7 @@ layout {
                 color_orange "#f5a97f"
                 
                 format_left   "{mode}#[bg=none] {tabs}"
-                format_center ""
+                format_center "{notifications}"
                 format_right  "{datetime}"
                 format_space  "#[bg=none]"
                 format_hide_on_overlength "false"
@@ -118,7 +118,7 @@ layout {
                 border_format   "#[fg=$fg]{char}"
                 border_position "top"
 
-                hide_frame_for_single_pane "true"
+                hide_frame_for_single_pane "false"
 
                 mode_normal        "#[bg=$green,fg=#1e1e2e,bold] NORMAL #[bg=none,fg=$green]█"
                 mode_locked        "#[bg=$black,fg=#1e1e2e,bold] LOCKED #[bg=none,fg=$black]█"
@@ -161,6 +161,11 @@ layout {
                 datetime        "#[fg=$fg,bold] {format} "
                 datetime_format "%A, %d %b %Y %H:%M:%S"
                 datetime_timezone "Asia/Kolkata"
+
+                // Use - zellij pipe "zjstatus::notify::Hello"
+                notification_format_unread           "#[fg=#89B4FA,bg=none,blink]  #[fg=#89B4FA,bg=none]{message}"
+                notification_format_no_notifications ""
+                notification_show_interval           "5"
             }
         }
     children
