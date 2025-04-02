@@ -28,7 +28,7 @@ return {
 	-- 	right = 0,
 	--   },
 
-	
+	treat_left_ctrlalt_as_altgr = true,
 
 	window_background_image_hsb = {
 		brightness = 0.025,
@@ -37,37 +37,21 @@ return {
 	-- window_background_opacity = 0.78,
 	-- window_background_opacity = 0.20,
 	window_decorations = "RESIZE",
+	disable_default_key_bindings = true,
+	-- send_composed_key_when_left_alt_is_pressed = true,
+    -- send_composed_key_when_right_alt_is_pressed = true,
+	enable_kitty_keyboard = true,
 	keys = {
-		-- {
-		-- 	key = "f",
-		-- 	mods = "CTRL",
-		-- 	action = wezterm.action.ToggleFullScreen,
-		-- },
 		{
-			key = 'h',
+			key = 'q',
 			mods = 'CMD',
-			action = wezterm.action.DisableDefaultAssignment,
+			action = wezterm.action.QuitApplication,
 		},
-		{
-		key = 'w',
-		mods = 'CMD',
-		action = wezterm.action.DisableDefaultAssignment,
+		{ 
+			key = 'v', 
+			mods = 'CMD', 
+			action = wezterm.action.PasteFrom('Clipboard') 
 		},
-		{
-		key = 'n',
-		mods = 'CMD',
-		action = wezterm.action.DisableDefaultAssignment,
-		},
-		{
-		key = 't',
-		mods = 'CMD',
-		action = wezterm.action.DisableDefaultAssignment,
-		},
-		{
-			key = 'f',
-			mods = 'CMD',
-			action = wezterm.action.DisableDefaultAssignment,
-			},
 
 	},
 
