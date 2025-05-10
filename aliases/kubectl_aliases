@@ -92,16 +92,97 @@ kdy() {
   done
 }
 
-kf() {
-  local resource=${2:-pods}  # Default to 'pods' if no second argument is provided
-  if [[ -z "$2" ]]; then
-    resource="pods"
+ky() {
+  # Check if a resource name is provided as an argument
+  if [[ -z "$1" ]]; then
+    echo "Usage: ky <resource_name> [omit_details_in_filename]"
+    echo "  <resource_name>: The type of Kubernetes resource (e.g., deployment, pod, connector)."
+    echo "  [omit_details_in_filename]: (Optional) Type 'true' or 'yes' or 'y' to save as <name>.yaml."
+    echo "                                Otherwise, saves as <namespace>_<resource>_<name>.yaml."
+    echo "Examples:"
+    echo "  ky deployment"
+    echo "  ky pod yes"
+    echo "  ky connector true"
+    return 1
   fi
-  kubectl get "$resource" -A | grep -iE "$1"
+
+  local resource_name="$1"
+  local omit_details_in_filename="${2:-false}" # Default to false if second arg is not provided
+  local selected_items
+
+  # Convert omit_details_in_filename to lowercase for easier comparison
+  omit_details_in_filename=$(echo "$omit_details_in_filename" | tr '[:upper:]' '[:lower:]')
+
+  # Get all resources of the given type across all namespaces,
+  # skip header, let user select one or more with fzf
+  selected_items=$(kubectl get "$resource_name" -A --no-headers=true | fzf --prompt="Select ${resource_name}(s) > " -m)
+
+  # Check if fzf returned any selection
+  if [[ -z "$selected_items" ]]; then
+    echo "No items selected."
+    return 0
+  fi
+
+  # Process each selected item
+  echo "$selected_items" | while IFS= read -r line; do
+    # awk output gives "namespace name ...", so we extract them
+    local namespace=$(echo "$line" | awk '{print $1}')
+    local name=$(echo "$line" | awk '{print $2}')
+    # Handle cases where the name might contain more parts if the resource type has a weird display format
+    # This is a simple way; for very complex output from `kubectl get`, parsing might need to be more robust.
+    if [[ $(echo "$line" | awk '{print NF}') -gt 2 ]]; then
+        name=$(echo "$line" | awk '{ $1=""; sub(/^[ \t]+/, ""); print $0 }' | awk '{print $1}')
+    fi
+
+    local filename
+
+    # Sanitize name for filename (replace slashes, common in some sub-resources or specific CRDs)
+    local sanitized_name="${name//\//_}"
+
+    # Construct the filename based on the omit_details_in_filename flag
+    if [[ "$omit_details_in_filename" == "true" || "$omit_details_in_filename" == "yes" || "$omit_details_in_filename" == "y" ]]; then
+      filename="${sanitized_name}.yaml"
+    else
+      filename="${namespace}_${resource_name}_${sanitized_name}.yaml"
+    fi
+
+    echo "Downloading YAML for ${resource_name} \"${name}\" in namespace \"${namespace}\" to ${filename}"
+
+    if ! kubectl get "$resource_name" "$name" -n "$namespace" -o yaml | kubectl neat > "$filename"; then
+      echo "Error downloading YAML for ${resource_name} \"${name}\" in namespace \"${namespace}\"."
+      # rm -f "$filename" # Optionally remove the partially created file
+    else
+      echo "Saved: ${filename}"
+    fi
+  done
 }
 
-alias kfp='kf'
-alias kfd='kf "" deployments'
-alias kfs='kf "" services'
-alias kfi='kf "" ingresses'
-alias kfc='kf "" configmaps'
+kgrep() {
+  local base_cmd="$1"
+  shift
+  if [ $# -gt 0 ]; then
+    eval "$base_cmd" | grep -iE "$*"
+  else
+    eval "$base_cmd"
+  fi
+}
+
+alias xpc='kgrep "kubecolor --force-colors get pods -A" "error|fail|exception|crash"'
+alias xp='kgrep "kubecolor --force-colors get pods -A"'
+alias xd='kgrep "kubecolor --force-colors get deployments -A"'
+# statefull
+alias xs='kgrep "kubecolor --force-colors get statefulsets -A"'
+alias xsv='kgrep "kubecolor --force-colors get services -A"'
+alias xi='kgrep "kubecolor --force-colors get ingresses -A"'
+alias xc='kgrep "kubecolor --force-colors get configmaps -A"'
+
+ff() {
+  echo "=== Deployments matching '$1' ==="
+  kubecolor --force-colors get deployments -A | grep -iE "$1"
+
+  echo "=== Statefulsets matching '$1' ==="
+  kubecolor --force-colors get statefulsets -A | grep -iE "$1"
+
+  echo "=== Pods matching '$1' ==="
+  kubecolor --force-colors get pods -A | grep -iE "$1"
+}
