@@ -30,14 +30,22 @@ source ~/.config/aliases/aliases
 source ~/.config/aliases/kubectl_aliases
 source ~/.config/private_aliases.sh
 
+# Add to your .zshrc or other shell config
+zstyle ':completion::*:*:*:*:*' insecure 'yes'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$HOME/.cache/zsh/completion"
+zstyle ':completion:*' format ''
+
+
 # Load plugins (ensures they are cached and updated via Znap)
 znap source zsh-users/zsh-completions
 znap source zsh-users/zsh-autosuggestions
 znap source zdharma-continuum/fast-syntax-highlighting
+# znap source jeffreytse/zsh-vi-mode
 # znap source droctothorpe/kubecolor
 
 # Load multiple Oh My Zsh plugins in one command
-znap source ohmyzsh/ohmyzsh plugins/{brew,aliases,colored-man-pages}
+# znap source ohmyzsh/ohmyzsh plugins/{brew,aliases,colored-man-pages}
 znap source junegunn/fzf shell/{completion,key-bindings}.zsh
 
 znap source Aloxaf/fzf-tab
