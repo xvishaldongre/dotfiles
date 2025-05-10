@@ -149,7 +149,7 @@ layout {
                 tab_separator           "#[bg=none] "
 
                 // indicators
-                tab_sync_indicator       " "
+                tab_sync_indicator       " "
                 tab_fullscreen_indicator " 󰊓"
                 tab_floating_indicator   " 󰹙"
 
@@ -169,5 +169,6 @@ layout {
             }
         }
     children
+    
 }
 }

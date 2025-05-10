@@ -38,6 +38,10 @@ keybinds {
         bind "Super p" { MoveTab "Right"; } // P = Move tab Right
         bind "Super r" { SwitchToMode "RenameTab"; TabNameInput 0; } // R = Rename tab
 
+        // PANE MANAGEMENT
+        bind "Super n" { SwitchToMode "Resize"; } // N = Nudge pane
+        bind "Super a" { ToggleActiveSyncTab; SwitchToMode "Normal"; } // A = All panes sync (Toggle Sync Input)
+
         // DIRECT TAB JUMPING
         bind "Super 1" { GoToTab 1; SwitchToMode "Normal"; } // 1 = Tab 1
         bind "Super 2" { GoToTab 2; SwitchToMode "Normal"; } // 2 = Tab 2
@@ -48,6 +52,10 @@ keybinds {
         bind "Super 7" { GoToTab 7; SwitchToMode "Normal"; } // 7 = Tab 7
         bind "Super 8" { GoToTab 8; SwitchToMode "Normal"; } // 8 = Tab 8
         bind "Super 9" { GoToTab 9; SwitchToMode "Normal"; } // 9 = Tab 9
+
+        bind "Super z" { ToggleMouseMode; }
+
+
     
     }   
 
@@ -83,6 +91,7 @@ keybinds {
         bind "w" { ToggleFloatingPanes; SwitchToMode "Normal"; }
         bind "e" { TogglePaneEmbedOrFloating; SwitchToMode "Normal"; }
         bind "c" { SwitchToMode "RenamePane"; PaneNameInput 0;}
+        // bind "i" { TogglePanePinned; SwitchToMode "Normal"; }
     }
     move {
         bind "Ctrl h" { SwitchToMode "Normal"; }
@@ -167,6 +176,27 @@ keybinds {
             };
             SwitchToMode "Normal"
         }
+        bind "c" {
+            LaunchOrFocusPlugin "configuration" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
+        bind "p" {
+            LaunchOrFocusPlugin "plugin-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
+        bind "a" {
+            LaunchOrFocusPlugin "zellij:about" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
     }
     tmux clear-defaults=true {
         bind "Ctrl Space" { Write 2; SwitchToMode "Normal"; }
@@ -178,7 +208,7 @@ keybinds {
         bind "h" { SwitchToMode "Move"; }
         bind "s" { SwitchToMode "Scroll"; }
         bind "o" { SwitchToMode "Session"; }
-        bind "q" { Quit; }
+        bind "q" { Quit; }   
     }
     shared_except "locked" {
         bind "Ctrl g" { SwitchToMode "Locked"; }
@@ -243,8 +273,7 @@ on_force_close "quit"
 // Choose the path to the default shell that zellij will use for opening new panes
 // Default: $SHELL
 //
-default_shell "/bin/zsh"
-
+d
 // Choose the path to override cwd that zellij will use for opening new panes
 //
 // default_cwd ""
