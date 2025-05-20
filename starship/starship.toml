@@ -3,28 +3,16 @@ add_newline = false
 # A minimal left prompt
 # format = """$directory$character"""
 # Which is equivalent to
+
 format = """
-$username\
-$hostname\
 $kubernetes\
 $directory\
 $git_branch\
-$git_commit\
-$git_state\
-$git_metrics\
 $git_status\
-$docker_context\
-$helm\
-$direnv\
-$env_var\
-$sudo\
 $cmd_duration\
 $line_break\
 $jobs\
 $battery\
-$time\
-$container\
-$shell\
 $character"""
 
 palette = "catppuccin_mocha"
