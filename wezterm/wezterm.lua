@@ -1,4 +1,23 @@
 local wezterm = require("wezterm")
+-- wezterm.on("gui-startup", function(cmd)
+--   local screen = wezterm.gui.screens().active
+-- --   local ratio = 1
+--   local width = screen.width * 1
+--   local height = screen.height * 0.8
+
+--   local tab, pane, window = wezterm.mux.spawn_window({
+--     position = {
+--       x = (screen.width - width) / 2,
+--       y = 0,
+--       origin = 'ActiveScreen',
+--     },
+--     -- You can optionally pass the startup command here
+--     -- workspace = 'default',
+--     -- cwd = wezterm.home_dir,
+--   })
+
+--   window:gui_window():set_inner_size(width, height)
+-- end)
 return {
 	-- color_scheme = 'termnial.sexy',
 	-- color_scheme = 'Catppuccin Macchiato',
@@ -14,13 +33,13 @@ return {
 	-- font = wezterm.font('JetBrains Mono'),
 	font = wezterm.font("FiraCode Nerd Font Mono", { weight = 600, stretch = "Normal", style = "Normal" }),
 	-- font = wezterm.font(''),
-
+	max_fps = 240,
 	-- macos_window_background_blur = 40,
 	hide_tab_bar_if_only_one_tab = true,
 	-- window_background_image = '/Users/vishal.dongre/Downloads/term.png',
-	window_background_image = '/Users/vishal.dongre/Downloads/asdf.jpg',
+	window_background_image = "/Users/vishal.dongre/Downloads/asdf.jpg",
 
-	initial_cols = 140,
+	initial_cols = 180,
 	initial_rows = 45,
 
 	-- window_padding = {
@@ -39,20 +58,35 @@ return {
 	window_decorations = "RESIZE",
 	disable_default_key_bindings = true,
 	-- send_composed_key_when_left_alt_is_pressed = true,
-    -- send_composed_key_when_right_alt_is_pressed = true,
+	-- send_composed_key_when_right_alt_is_pressed = true,
 	enable_kitty_keyboard = true,
 	keys = {
+
 		{
-			key = 'q',
-			mods = 'CMD',
+			key = "q",
+			mods = "CMD",
 			action = wezterm.action.QuitApplication,
 		},
-		{ 
-			key = 'v', 
-			mods = 'CMD', 
-			action = wezterm.action.PasteFrom('Clipboard') 
+		{
+			key = "v",
+			mods = "CMD",
+			action = wezterm.action.PasteFrom("Clipboard"),
 		},
-
+		{
+			key = "=",
+			mods = "CMD",
+			action = wezterm.action.IncreaseFontSize,
+		},
+		{
+			key = "-",
+			mods = "CMD",
+			action = wezterm.action.DecreaseFontSize,
+		},
+		{
+			key = "0",
+			mods = "CMD",
+			action = wezterm.action.ResetFontSize,
+		},
 	},
 
 	mouse_bindings = {
