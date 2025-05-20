@@ -19,7 +19,7 @@ return {
 		statuscolumn = { enabled = true },
 		words = { enabled = true },
 		image = { enabled = true },
-		scroll = { enabled = false },
+		scroll = { enabled = true },
 		lazygit = { enabled = true },
 	},
 	keys = {

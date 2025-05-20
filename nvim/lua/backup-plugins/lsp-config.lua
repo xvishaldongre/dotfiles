@@ -60,7 +60,7 @@ return {
 			{ "mason-org/mason.nvim", opts = {} },
 			"mason-org/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
-			{ "j-hui/fidget.nvim", opts = {} },
+			{ "j-hui/fidget.nvim",    opts = {} },
 			-- snacks.nvim is now a top-level plugin, no longer a direct dep here
 		},
 		config = function()
@@ -98,7 +98,8 @@ return {
 				end
 
 				if client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, bufnr) then
-					local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+					local highlight_augroup = vim.api.nvim_create_augroup("kickstart-lsp-highlight",
+						{ clear = false })
 					vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 						buffer = bufnr,
 						group = highlight_augroup,
@@ -110,11 +111,16 @@ return {
 						callback = vim.lsp.buf.clear_references,
 					})
 					vim.api.nvim_create_autocmd("LspDetach", {
-						group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+						group = vim.api.nvim_create_augroup("kickstart-lsp-detach",
+							{ clear = true }),
 						callback = function(event2)
 							if event2.buf == bufnr then
 								vim.lsp.buf.clear_references()
-								vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+								vim.api.nvim_clear_autocmds({
+									group =
+									"kickstart-lsp-highlight",
+									buffer = event2.buf
+								})
 							end
 						end,
 					})
@@ -122,7 +128,10 @@ return {
 
 				if client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, bufnr) then
 					map("<leader>th", function()
-						vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }))
+						vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({
+							bufnr =
+							    bufnr
+						}))
 					end, "[T]oggle Inlay [H]ints")
 				end
 
@@ -159,7 +168,8 @@ return {
 					prefix = "●",
 					format = function(diagnostic)
 						local icons = { ERROR = "󰅚", WARN = "", INFO = "", HINT = "󰌶" }
-						local icon = icons[vim.diagnostic.severity[diagnostic.severity]:upper()] or ""
+						local icon = icons[vim.diagnostic.severity[diagnostic.severity]:upper()] or
+						    ""
 						return string.format("%s %s", icon, diagnostic.message)
 					end,
 				},
@@ -186,6 +196,7 @@ return {
 				},
 				clangd = {},
 				gopls = {},
+				pyright = {},
 				html = {},
 				cssls = {},
 				jsonls = {
@@ -221,7 +232,8 @@ return {
 					function(server_name)
 						local server_opts = servers[server_name] or {}
 						server_opts.capabilities =
-							vim.tbl_deep_extend("force", {}, capabilities, server_opts.capabilities or {})
+						    vim.tbl_deep_extend("force", {}, capabilities,
+							    server_opts.capabilities or {})
 						server_opts.on_attach = on_attach
 						require("lspconfig")[server_name].setup(server_opts)
 					end,
