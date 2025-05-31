@@ -186,3 +186,7 @@ ff() {
   echo "=== Pods matching '$1' ==="
   kubecolor --force-colors get pods -A | grep -iE "$1"
 }
+
+alias l='stern'
+alias l='stern -E istio-proxy -E istio-init'
+alias ln='stern -E istio-proxy -E istio-init -n'
