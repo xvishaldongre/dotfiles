@@ -56,5 +56,11 @@ znap eval starship 'starship init zsh --print-full-init'
 znap eval zoxide 'zoxide init zsh'
 znap eval atuin 'atuin init zsh --disable-up-arrow'
 
+export PATH=~/.adaptive/bin/:$PATH
+
+source /Users/vishal.dongre/.config/broot/launcher/bash/br
+
+source ~/.config/zshrc/bindkey.sh
 # Optimize prompt loading
 znap prompt
+
