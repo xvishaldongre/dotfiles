@@ -39,7 +39,7 @@ return {
 		opts = {
 			keymap = { preset = "default" },
 			appearance = { nerd_font_variant = "mono" },
-			completion = { documentation = { auto_show = false, auto_show_delay_ms = 500 } },
+			completion = { documentation = { auto_show = true, auto_show_delay_ms = 250 } },
 			sources = {
 				default = { "lsp", "snippets", "path", "buffer", "lazydev" },
 				providers = {
@@ -49,6 +49,10 @@ return {
 			snippets = { preset = "luasnip" },
 			fuzzy = { implementation = "lua" },
 			signature = { enabled = true },
+			cmdline = {
+				keymap = { preset = "inherit" },
+				completion = { menu = { auto_show = true } },
+			},
 		},
 	},
 
@@ -144,7 +148,7 @@ return {
 			vim.diagnostic.config({
 				severity_sort = true,
 				float = { border = "rounded", source = "if_many", focusable = false },
-				underline = { severity = { min = vim.diagnostic.severity.WARN } },
+				underline = { severity = { min = vim.diagnostic.severity.ERROR } },
 				signs = vim.g.have_nerd_font and {
 					text = {
 						[vim.diagnostic.severity.ERROR] = "󰅚 ",
@@ -213,6 +217,7 @@ return {
 				bashls = {},
 				dockerls = {},
 				marksman = {},
+				basedpyright = {},
 			}
 
 			require("mason-lspconfig").setup({
@@ -255,18 +260,16 @@ return {
 			formatters_by_ft = {
 				lua = { "stylua" },
 				python = { "isort", "black" },
-				javascript = { { "prettierd", "prettier" } },
-				typescript = { { "prettierd", "prettier" } },
-				javascriptreact = { { "prettierd", "prettier" } },
-				typescriptreact = { { "prettierd", "prettier" } },
-				json = { { "prettierd", "prettier" } },
-				-- For YAML, you can use prettier or rely on yamlls if it supports formatting
-				-- Prettier is often preferred for consistency across filetypes.
-				yaml = { { "prettierd", "prettier" } },
-				markdown = { { "prettierd", "prettier" } },
-				html = { { "prettierd", "prettier" } },
-				css = { { "prettierd", "prettier" } },
-				scss = { { "prettierd", "prettier" } },
+				javascript = { "prettierd", "prettier", stop_after_first = true },
+				typescript = { "prettierd", "prettier", stop_after_first = true },
+				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+				json = { "prettierd", "prettier", stop_after_first = true },
+				yaml = { "prettierd", "prettier", stop_after_first = true },
+				markdown = { "prettierd", "prettier", stop_after_first = true },
+				html = { "prettierd", "prettier", stop_after_first = true },
+				css = { "prettierd", "prettier", stop_after_first = true },
+				scss = { "prettierd", "prettier", stop_after_first = true },
 				sh = { "shfmt" },
 			},
 		},

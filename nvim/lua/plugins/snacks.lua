@@ -12,18 +12,61 @@ return {
 		explorer = { enabled = true },
 		indent = { enabled = true },
 		input = { enabled = true },
-		picker = { enabled = true },
+		picker = {
+			enabled = true,
+			layout = {
+				layout = {
+					box = "horizontal",
+					width = 0.8,
+					min_width = 120,
+					height = 0.8,
+					{
+						box = "vertical",
+						border = "rounded",
+						title = "{title} {live} {flags}",
+						{ win = "input", height = 1, border = "bottom" },
+						{ win = "list", border = "none" },
+					},
+					{ win = "preview", title = "{preview}", border = "rounded", width = 0.4 },
+				},
+			},
+		},
 		notifier = { enabled = true },
 		quickfile = { enabled = true },
 		scope = { enabled = true },
 		statuscolumn = { enabled = true },
 		words = { enabled = true },
 		image = { enabled = true },
-		scroll = { enabled = false },
+		scroll = {
+			enabled = false,
+			animate = {
+				duration = { step = 1, total = 40 }, -- ultra fast animation
+				easing = "linear",
+			},
+			animate_repeat = {
+				delay = 30, -- very quick repeat trigger
+				duration = { step = 1, total = 20 }, -- extremely fast on repeat
+				easing = "linear",
+			},
+			filter = function(buf)
+				return vim.g.snacks_scroll ~= false
+					and vim.b[buf].snacks_scroll ~= false
+					and vim.bo[buf].buftype ~= "terminal"
+			end,
+		},
 		lazygit = { enabled = true },
 	},
 	keys = {
 		-- Top Pickers & Explorer
+		--
+
+		{
+			"<leader>so",
+			function()
+				Snacks.picker.zoxide()
+			end,
+			desc = "Smart Find Files",
+		},
 		{
 			"<leader><space>",
 			function()
