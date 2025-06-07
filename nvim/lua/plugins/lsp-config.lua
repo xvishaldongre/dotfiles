@@ -1,4 +1,5 @@
 return {
+
 	{
 		-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
 		"folke/lazydev.nvim",
@@ -168,6 +169,11 @@ return {
 					end,
 				},
 				update_in_insert = false,
+				-- Make diagnostic underlines straight instead of squiggly
+				vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline = true }),
+				vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { underline = true }),
+				vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { underline = true }),
+				vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { underline = true }),
 			})
 
 			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
@@ -284,6 +290,7 @@ return {
 	-- Schema integration for JSON/YAML
 	{
 		"b0o/schemastore.nvim",
+		event = "VeryLazy",
 		lazy = true, -- Load when schemastore.nvim is required by a server config
 		-- No specific config needed here usually, it's used by lspconfig settings
 	},

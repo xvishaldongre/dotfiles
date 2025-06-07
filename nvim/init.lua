@@ -49,7 +49,6 @@ vim.schedule(function()
 	vim.o.clipboard = "unnamedplus"
 end)
 
-vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open Oil" })
 vim.o.tabstop = 4
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
@@ -112,74 +111,3 @@ vim.keymap.set("n", "<leader>tt", ":ToggleVirtualText<CR>", {
 	silent = true,
 	desc = "Toggle virtual text diagnostics",
 })
-
--- Move to previous/next
-vim.keymap.set("n", "<C-h>", "<Cmd>BufferPrevious<CR>")
-vim.keymap.set("n", "<C-l>", "<Cmd>BufferNext<CR>")
-
--- Re-order to previous/next
-vim.keymap.set("n", "<A-<>", "<Cmd>BufferMovePrevious<CR>")
-vim.keymap.set("n", "<A->>", "<Cmd>BufferMoveNext<CR>")
-
--- Goto buffer in position...
-vim.keymap.set("n", "<A-1>", "<Cmd>BufferGoto 1<CR>")
-vim.keymap.set("n", "<A-2>", "<Cmd>BufferGoto 2<CR>")
-vim.keymap.set("n", "<A-3>", "<Cmd>BufferGoto 3<CR>")
-vim.keymap.set("n", "<A-4>", "<Cmd>BufferGoto 4<CR>")
-vim.keymap.set("n", "<A-5>", "<Cmd>BufferGoto 5<CR>")
-vim.keymap.set("n", "<A-6>", "<Cmd>BufferGoto 6<CR>")
-vim.keymap.set("n", "<A-7>", "<Cmd>BufferGoto 7<CR>")
-vim.keymap.set("n", "<A-8>", "<Cmd>BufferGoto 8<CR>")
-vim.keymap.set("n", "<A-9>", "<Cmd>BufferGoto 9<CR>")
-vim.keymap.set("n", "<A-0>", "<Cmd>BufferLast<CR>")
-
--- Pin/unpin buffer
-vim.keymap.set("n", "<A-p>", "<Cmd>BufferPin<CR>")
-
--- Close buffer
-vim.keymap.set("n", "<A-c>", "<Cmd>BufferClose<CR>")
-
--- Magic buffer-picking mode
-vim.keymap.set("n", "<C-p>", "<Cmd>BufferPick<CR>")
-vim.keymap.set("n", "<C-s-p>", "<Cmd>BufferPickDelete<CR>")
-
--- Sort automatically by...
-vim.keymap.set("n", "<Space>bb", "<Cmd>BufferOrderByBufferNumber<CR>")
-vim.keymap.set("n", "<Space>bn", "<Cmd>BufferOrderByName<CR>")
-vim.keymap.set("n", "<Space>bd", "<Cmd>BufferOrderByDirectory<CR>")
-vim.keymap.set("n", "<Space>bl", "<Cmd>BufferOrderByLanguage<CR>")
-vim.keymap.set("n", "<Space>bw", "<Cmd>BufferOrderByWindowNumber<CR>")
-
--- Note management
-vim.keymap.set("n", "<leader>on", ":ObsidianNew<CR>")
--- vim.keymap.set("n", "<leader>ont", ":ObsidianNewFromTemplate<CR>")
-vim.keymap.set("n", "<leader>or", ":ObsidianRename<CR>")
-
--- Navigation
--- vim.keymap.set("n", "<leader>oo", ":ObsidianOpen<CR>")
-vim.keymap.set("n", "<leader>oq", ":ObsidianQuickSwitch<CR>")
-vim.keymap.set("n", "<leader>of", ":ObsidianFollowLink<CR>")
-vim.keymap.set("n", "<leader>oj", ":ObsidianTOC<CR>")
-
--- Daily notes
-vim.keymap.set("n", "<leader>ot", ":ObsidianToday<CR>")
-vim.keymap.set("n", "<leader>oy", ":ObsidianYesterday<CR>")
-vim.keymap.set("n", "<leader>oT", ":ObsidianTomorrow<CR>")
-vim.keymap.set("n", "<leader>od", ":ObsidianDailies<CR>")
-
--- Linking
-vim.keymap.set("n", "<leader>ol", ":ObsidianLink<CR>")
-vim.keymap.set("n", "<leader>oL", ":ObsidianLinkNew<CR>")
-vim.keymap.set("n", "<leader>ok", ":ObsidianLinks<CR>")
-
--- Search
-vim.keymap.set("n", "<leader>os", ":ObsidianSearch<CR>")
-vim.keymap.set("n", "<leader>ob", ":ObsidianBacklinks<CR>")
-vim.keymap.set("n", "<leader>oa", ":ObsidianTags<CR>")
-
--- Templates and checkboxes
-vim.keymap.set("n", "<leader>op", ":ObsidianTemplate<CR>")
-vim.keymap.set("n", "<leader>ox", ":ObsidianToggleCheckbox<CR>")
-
--- Workspace
-vim.keymap.set("n", "<leader>ow", ":ObsidianWorkspace<CR>")

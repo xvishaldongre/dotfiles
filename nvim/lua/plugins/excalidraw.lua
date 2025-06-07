@@ -1,4 +1,5 @@
 return {
+	event = "VeryLazy",
 	"marcocofano/excalidraw.nvim",
 	opts = {
 		storage_dir = "~/Documents/notes",

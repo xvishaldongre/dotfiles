@@ -12,6 +12,41 @@ return {
 		"echasnovski/mini.pick",
 		"nvim-treesitter/nvim-treesitter",
 	},
+	keys = {
+		-- Note management
+		{ mode = "n", "<leader>on", ":ObsidianNew<CR>" },
+		-- {mode ="n", "<leader>ont", ":ObsidianNewFromTemplate<CR>"},
+		{ mode = "n", "<leader>or", ":ObsidianRename<CR>" },
+
+		-- Navigation
+		-- {mode ="n", "<leader>oo", ":ObsidianOpen<CR>"},
+		{ mode = "n", "<leader>oq", ":ObsidianQuickSwitch<CR>" },
+		{ mode = "n", "<leader>of", ":ObsidianFollowLink<CR>" },
+		{ mode = "n", "<leader>oj", ":ObsidianTOC<CR>" },
+
+		-- Daily notes
+		{ mode = "n", "<leader>ot", ":ObsidianToday<CR>" },
+		{ mode = "n", "<leader>oy", ":ObsidianYesterday<CR>" },
+		{ mode = "n", "<leader>oT", ":ObsidianTomorrow<CR>" },
+		{ mode = "n", "<leader>od", ":ObsidianDailies<CR>" },
+
+		-- Linking
+		{ mode = "n", "<leader>ol", ":ObsidianLink<CR>" },
+		{ mode = "n", "<leader>oL", ":ObsidianLinkNew<CR>" },
+		{ mode = "n", "<leader>ok", ":ObsidianLinks<CR>" },
+
+		-- Search
+		{ mode = "n", "<leader>os", ":ObsidianSearch<CR>" },
+		{ mode = "n", "<leader>ob", ":ObsidianBacklinks<CR>" },
+		{ mode = "n", "<leader>oa", ":ObsidianTags<CR>" },
+
+		-- Templates and checkboxes
+		{ mode = "n", "<leader>op", ":ObsidianTemplate<CR>" },
+		{ mode = "n", "<leader>ox", ":ObsidianToggleCheckbox<CR>" },
+
+		-- Workspace
+		{ mode = "n", "<leader>ow", ":ObsidianWorkspace<CR>" },
+	},
 	opts = {
 		-- Vault root
 		dir = home("~/Documents/notes"),
