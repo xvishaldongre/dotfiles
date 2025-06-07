@@ -57,6 +57,7 @@ alias krmfailed='kubectl delete pods --field-selector=status.phase=Failed'
 kei() {
   kubectl get pods -A | grep -v "using proxy" | tail -n +2 | grep -i running | fzf | awk '{print $1, $2}' | read namespace pod_name; 
   ## Try to start bash, if not available, try ash, if not available, try sh
+  echo "kubectl exec -i -t -n $namespace $pod_name -- sh -c 'bash || ash || sh || echo \"No shell available\"'"; \
   kubectl exec -i -t -n $namespace $pod_name -- sh -c 'bash || ash || sh || echo \"No shell available\"';
   unset namespace pod_name
 }
