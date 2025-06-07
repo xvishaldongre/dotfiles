@@ -87,42 +87,42 @@ return {
 			mods = "CMD",
 			action = wezterm.action.ResetFontSize,
 		},
-		-- {
-		-- 	key = "h",
-		-- 	mods = "ALT",
-		-- 	action = wezterm.action_callback(function()
-		-- 		os.execute("zellij action new-pane --direction right && zellij action move-pane left")
-		-- 	end),
-		-- },
-		-- {
-		-- 	key = "l",
-		-- 	mods = "ALT",
-		-- 	action = wezterm.action_callback(function()
-		-- 		os.execute("zellij action new-pane --direction right")
-		-- 	end),
-		-- },
-		-- {
-		-- 	key = "j",
-		-- 	mods = "ALT",
-		-- 	action = wezterm.action_callback(function()
-		-- 		os.execute("zellij action new-pane --direction down")
-		-- 	end),
-		-- },
-		-- {
-		-- 	key = "k",
-		-- 	mods = "ALT",
-		-- 	action = wezterm.action_callback(function()
-		-- 		os.execute("zellij action new-pane --direction down && zellij action move-pane up")
-		-- 	end),
-		-- },
-		-- {
-		-- 	key = "t",
-		-- 	mods = "ALT",
-		-- 	action = wezterm.action_callback(function()
-		-- 		local session = os.getenv("ZELLIJ_SESSION_NAME") or "unknown"
-		-- 		os.execute("echo 'Current session: " .. session .. "' > ~/test.txt")
-		-- 	end),
-		-- },
+		{
+			key = "h",
+			mods = "ALT",
+			action = wezterm.action_callback(function()
+				os.execute("zellij action new-pane --direction right && zellij action move-pane left")
+			end),
+		},
+		{
+			key = "l",
+			mods = "ALT",
+			action = wezterm.action_callback(function()
+				os.execute("zellij action new-pane --direction right")
+			end),
+		},
+		{
+			key = "j",
+			mods = "ALT",
+			action = wezterm.action_callback(function()
+				os.execute("zellij action new-pane --direction down")
+			end),
+		},
+		{
+			key = "k",
+			mods = "ALT",
+			action = wezterm.action_callback(function()
+				os.execute("zellij action new-pane --direction down && zellij action move-pane up")
+			end),
+		},
+		{
+			key = "t",
+			mods = "ALT",
+			action = wezterm.action_callback(function()
+				local session = os.getenv("ZELLIJ_SESSION_NAME") or "unknown"
+				os.execute("echo 'Current session: " .. session .. "' > ~/test.txt")
+			end),
+		},
 	},
 
 	mouse_bindings = {
