@@ -1,5 +1,5 @@
 -- lua/plugins/obsidian.lua
-local home = vim.fn.expand
+local expand = vim.fn.expand
 
 return {
 	"obsidian-nvim/obsidian.nvim",
@@ -49,13 +49,14 @@ return {
 	},
 	opts = {
 		-- Vault root
-		dir = home("~/Documents/notes"),
+		-- dir = expand("~/Documents/notes"),
 
 		-- Workspaces
 		workspaces = {
 			{
 				name = "notes",
-				path = home("~/Documents/notes"),
+				path = "~/Documents/notes",
+				strict = true,
 				overrides = {
 					notes_subdir = "notes",
 				},
