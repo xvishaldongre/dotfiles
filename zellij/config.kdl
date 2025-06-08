@@ -344,7 +344,7 @@ load_plugins {
 //
 theme "catppuccin-macchiato"
 
-// The name of the default layout to load on startup
+// The name of the default layout to load ontartup
 // Default: "default"
 //
 // default_layout "compact"
@@ -426,3 +426,5 @@ theme "catppuccin-macchiato"
 // Default: false
 //
 // disable_session_metadata true
+show_startup_tips false
+
