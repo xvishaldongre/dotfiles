@@ -189,7 +189,7 @@ return {
 			desc = "Git Stash",
 		},
 		{
-			"<leader>gd",
+			"<leader>gc",
 			function()
 				Snacks.picker.git_diff()
 			end,
@@ -432,13 +432,13 @@ return {
 			desc = "LSP Workspace Symbols",
 		},
 		-- Other
-		{
-			"<leader>z",
-			function()
-				Snacks.zen()
-			end,
-			desc = "Toggle Zen Mode",
-		},
+		-- {
+		-- 	"<leader>z",
+		-- 	function()
+		-- 		Snacks.zen()
+		-- 	end,
+		-- 	desc = "Toggle Zen Mode",
+		-- },
 		{
 			"<leader>Z",
 			function()
@@ -503,20 +503,20 @@ return {
 			end,
 			desc = "Dismiss All Notifications",
 		},
-		{
-			"<c-/>",
-			function()
-				Snacks.terminal()
-			end,
-			desc = "Toggle Terminal",
-		},
-		{
-			"<c-_>",
-			function()
-				Snacks.terminal()
-			end,
-			desc = "which_key_ignore",
-		},
+		-- {
+		-- 	"<c-/>",
+		-- 	function()
+		-- 		Snacks.terminal()
+		-- 	end,
+		-- 	desc = "Toggle Terminal",
+		-- },
+		-- {
+		-- 	"<c-_>",
+		-- 	function()
+		-- 		Snacks.terminal()
+		-- 	end,
+		-- 	desc = "which_key_ignore",
+		-- },
 		{
 			"]]",
 			function()
@@ -532,6 +532,13 @@ return {
 			end,
 			desc = "Prev Reference",
 			mode = { "n", "t" },
+		},
+		{
+			"gw",
+			function()
+				Snacks.picker.worktrees()
+			end,
+			mode = { "n" },
 		},
 	},
 }
