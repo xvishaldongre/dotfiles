@@ -72,7 +72,7 @@ ksd() {
 }
 
 ksdf () {
-  ksd | grep -i $1
+  ksd | grep --color -i $1
 }
 
 ## kubectl rollout restart deployment interactively
