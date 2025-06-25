@@ -57,7 +57,7 @@ keybinds {
 
         bind "Super ;" {
           // Use bash -c to run the script using the $HOME variable for the path.
-          Run "bash" "-c" "$HOME/.config/zellij/plugins/session.sh" {
+          Run "sh" "-c" "$HOME/.config/zellij/plugins/session-v2.sh" {
             name "Session Switcher"
             floating true
             width "50%"
@@ -65,7 +65,16 @@ keybinds {
             close_on_exit true
           }
         }
-    
+        bind "Super y" {
+            // Run the 'zellij pipe' command in a temporary shell.
+            // The r#"..."# raw string syntax is crucial for correct variable expansion.
+            Run "bash" "-c" r#"zellij pipe "zjstatus::notify::Your session name: $ZELLIJ_SESSION_NAME""# {
+              // Make the temporary pane float so it doesn't resize your layout.
+              floating true
+              // Close the pane as soon as the command finishes.
+              close_on_exit true
+            }
+          }
     }   
 
     locked {
