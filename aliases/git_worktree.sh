@@ -12,12 +12,13 @@ get_repo_name() {
 gwa() {
     local new_branch=$1
     local source_branch=${2:-}
+
     if [[ -z "$new_branch" ]]; then
         echo "Usage: gwa <new_branch> [source_branch]"
         return 1
     fi
 
-    # Find source branch: default main or master
+    # Determine default source branch
     if [[ -z "$source_branch" ]]; then
         if git show-ref --verify --quiet refs/heads/main; then
             source_branch="main"
@@ -36,25 +37,27 @@ gwa() {
         return 1
     fi
 
-    # Sanitize new_branch for folder name (replace slashes with dashes)
     local safe_branch=${new_branch//\//-}
-
-    # Folder name with format: wt:<repo_name>:<new_branch>
     local worktree_folder="$WORKTREE_ROOT/wt:${repo}:${safe_branch}"
 
     mkdir -p "$WORKTREE_ROOT"
 
-    echo "Adding worktree at $worktree_folder from $source_branch branch, new branch $new_branch..."
+    echo "Preparing worktree at $worktree_folder for branch '$new_branch'..."
 
-    git worktree add -b "$new_branch" "$worktree_folder" "$source_branch" || return 1
+    if git show-ref --verify --quiet "refs/heads/$new_branch"; then
+        echo "Branch '$new_branch' already exists. Adding existing branch..."
+        git worktree add "$worktree_folder" "$new_branch" || return 1
+    else
+        echo "Branch '$new_branch' does not exist. Creating from '$source_branch'..."
+        git worktree add -b "$new_branch" "$worktree_folder" "$source_branch" || return 1
+    fi
 
-    # Add to zoxide database for quick access
     if command -v zoxide >/dev/null 2>&1; then
         echo "Adding worktree folder to zoxide database..."
         zoxide add "$worktree_folder"
     fi
 
-    echo "Worktree created: $worktree_folder"
+    echo "Worktree ready: $worktree_folder"
 }
 
 # gwp: git worktree prune

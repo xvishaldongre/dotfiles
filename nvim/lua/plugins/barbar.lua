@@ -1,5 +1,5 @@
 return {
-	enabled = true,
+	enabled = false,
 	event = "VimEnter",
 	"romgrk/barbar.nvim",
 	dependencies = {
@@ -37,7 +37,7 @@ return {
 		{ "<C-p>", "<Cmd>BufferPin<CR>", mode = "n" },
 
 		-- Close buffer
-		{ "<C-w>", "<Cmd>BufferClose<CR>", mode = "n" },
+		{ "<C-x>", "<Cmd>BufferClose<CR>", mode = "n" },
 
 		-- Magic buffer-picking mode
 		{ "<C-s>", "<Cmd>BufferPick<CR>", mode = "n" },

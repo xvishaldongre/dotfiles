@@ -7,7 +7,7 @@ export STARSHIP_CONFIG=~/.config/starship/starship.toml
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_VERIFY_ATTESTATIONS=1
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+export PATH="/opt/homebrew/opt/libpq/bin:/opt/local/bin:/opt/local/sbin:~/.adaptive/bin:$PATH"
 export EDITOR=nvim
 export VISUAL=nvim
 
@@ -18,49 +18,44 @@ setopt interactivecomments
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
+setopt HIST_IGNORE_SPACE HIST_IGNORE_DUPS SHARE_HISTORY
 
-setopt HIST_IGNORE_SPACE  # Don't save when prefixed with space
-setopt HIST_IGNORE_DUPS   # Don't save duplicate lines
-setopt SHARE_HISTORY      # Share history between sessions
-
+# ZLE
 zle_highlight=('paste:none')
 
-# Source local alias files
-source ~/.config/aliases/aliases
-source ~/.config/aliases/kubectl_aliases
-source ~/.config/private_aliases.sh
-
-# Add to your .zshrc or other shell config
+# Completion styles
 zstyle ':completion::*:*:*:*:*' insecure 'yes'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$HOME/.cache/zsh/completion"
 zstyle ':completion:*' format ''
 
+# Source local alias files
+source ~/.config/aliases/aliases
+source ~/.config/aliases/kubectl_aliases
+source ~/.config/private_aliases.sh
+source ~/.config/aliases/git_worktree.sh
+# source ~/.config/zshrc/bindkey.sh
 
-# Load plugins (ensures they are cached and updated via Znap)
+# Load plugins (via Znap, cached & updated)
 znap source zsh-users/zsh-completions
 znap source zsh-users/zsh-autosuggestions
 znap source zdharma-continuum/fast-syntax-highlighting
 # znap source jeffreytse/zsh-vi-mode
 # znap source droctothorpe/kubecolor
-
-# Load multiple Oh My Zsh plugins in one command
-# znap source ohmyzsh/ohmyzsh plugins/{brew,aliases,colored-man-pages}
-znap source junegunn/fzf shell/{completion,key-bindings}.zsh
-
-znap source Aloxaf/fzf-tab
 # znap source marlonrichert/zcolor
+
+# Oh My Zsh plugins (optional)
+# znap source ohmyzsh/ohmyzsh plugins/{brew,aliases,colored-man-pages}
+
+# FZF
+znap source junegunn/fzf shell/{completion,key-bindings}.zsh
+znap source Aloxaf/fzf-tab
 
 # Initialize tools efficiently
 znap eval starship 'starship init zsh --print-full-init'
 znap eval zoxide 'zoxide init zsh'
 znap eval atuin 'atuin init zsh --disable-up-arrow'
 
-export PATH=~/.adaptive/bin/:$PATH
-
-source /Users/vishal.dongre/.config/broot/launcher/bash/br
-
-source ~/.config/zshrc/bindkey.sh
 # Optimize prompt loading
 znap prompt
 

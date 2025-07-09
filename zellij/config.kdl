@@ -68,11 +68,14 @@ keybinds {
         bind "Super y" {
             // Run the 'zellij pipe' command in a temporary shell.
             // The r#"..."# raw string syntax is crucial for correct variable expansion.
-            Run "bash" "-c" r#"zellij pipe "zjstatus::notify::Your session name: $ZELLIJ_SESSION_NAME""# {
+            Run "sh" "-c" "navi --print | head -n1 | pbcopy" {
               // Make the temporary pane float so it doesn't resize your layout.
+               name "Navi"
               floating true
               // Close the pane as soon as the command finishes.
               close_on_exit true
+              width "50%"
+              height "50%"
             }
           }
     }   
@@ -416,7 +419,7 @@ scroll_buffer_size 10000000000
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
 //
-// scrollback_editor "/usr/bin/vim"
+scrollback_editor "/opt/homebrew/bin/nvim"
 
 // When attaching to an existing session with other users,
 // should the session be mirrored (true)

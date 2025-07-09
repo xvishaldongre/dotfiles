@@ -1,8 +1,8 @@
 return {
-
 	{
 		-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
 		"folke/lazydev.nvim",
+		event = "VeryLazy",
 		ft = "lua",
 		opts = {
 			library = {
@@ -40,7 +40,7 @@ return {
 		opts = {
 			keymap = { preset = "default" },
 			appearance = { nerd_font_variant = "mono" },
-			completion = { documentation = { auto_show = true, auto_show_delay_ms = 250 } },
+			completion = { documentation = { auto_show = true, auto_show_delay_ms = 500 } },
 			sources = {
 				default = { "lsp", "snippets", "path", "buffer", "lazydev" },
 				providers = {
@@ -169,11 +169,6 @@ return {
 					end,
 				},
 				update_in_insert = false,
-				-- Make diagnostic underlines straight instead of squiggly
-				vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline = true }),
-				vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { underline = true }),
-				vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { underline = true }),
-				vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { underline = true }),
 			})
 
 			vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
@@ -266,17 +261,20 @@ return {
 			formatters_by_ft = {
 				lua = { "stylua" },
 				python = { "isort", "black" },
-				javascript = { "prettierd", "prettier", stop_after_first = true },
-				typescript = { "prettierd", "prettier", stop_after_first = true },
-				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
-				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
-				json = { "prettierd", "prettier", stop_after_first = true },
-				yaml = { "prettierd", "prettier", stop_after_first = true },
-				markdown = { "prettierd", "prettier", stop_after_first = true },
-				html = { "prettierd", "prettier", stop_after_first = true },
-				css = { "prettierd", "prettier", stop_after_first = true },
-				scss = { "prettierd", "prettier", stop_after_first = true },
+				javascript = { { "prettierd", "prettier" } },
+				typescript = { { "prettierd", "prettier" } },
+				javascriptreact = { { "prettierd", "prettier" } },
+				typescriptreact = { { "prettierd", "prettier" } },
+				json = { { "prettierd", "prettier" } },
+				-- For YAML, you can use prettier or rely on yamlls if it supports formatting
+				-- Prettier is often preferred for consistency across filetypes.
+				yaml = { { "prettierd", "prettier" } },
+				markdown = { { "prettierd", "prettier" } },
+				html = { { "prettierd", "prettier" } },
+				css = { { "prettierd", "prettier" } },
+				scss = { { "prettierd", "prettier" } },
 				sh = { "shfmt" },
+				go = { "goimports", "gofumpt" },
 			},
 		},
 		config = function(_, opts)
@@ -290,7 +288,6 @@ return {
 	-- Schema integration for JSON/YAML
 	{
 		"b0o/schemastore.nvim",
-		event = "VeryLazy",
 		lazy = true, -- Load when schemastore.nvim is required by a server config
 		-- No specific config needed here usually, it's used by lspconfig settings
 	},

@@ -11,7 +11,7 @@ return {
 		-- Id is automatically added at the beginning, and name at the end
 		-- See :help oil-columns
 		columns = {
-			"icon", -- "permissions", "size",
+			-- "icon", -- "permissions", "size",
 			-- "mtime",
 		},
 		-- Buffer-local options to use for oil buffers
@@ -54,7 +54,7 @@ return {
 		-- set to `false` to disable, or "name" to keep it on the file names
 		constrain_cursor = "editable",
 		-- set to true to watch the filesystem for changes and reload oil
-		watch_for_changes = false,
+		watch_for_changes = true,
 		-- keymaps in oil buffer. can be any value that `vim.keymap.set` accepts or a table of keymap
 		-- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })
 		-- additionally, if it is a string that matches "actions.<name>",

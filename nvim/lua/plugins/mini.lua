@@ -1,6 +1,5 @@
 return { -- Collection of various small independent plugins/modules
 	"echasnovski/mini.nvim",
-	event = "VeryLazy",
 	config = function()
 		-- Better Around/Inside textobjects
 		--
@@ -18,7 +17,9 @@ return { -- Collection of various small independent plugins/modules
 		-- require('mini.surround').setup()
 
 		-- require('mini.files').setup()
-		require("mini.comment")
+		-- require("mini.comment")
+		-- require("mini.cursorword").setup()
+		-- require("mini.git").setup()
 		require("mini.pairs").setup()
 		-- Simple and easy statusline.
 		--  You could remove this setup call if you don't like it,

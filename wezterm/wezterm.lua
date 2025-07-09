@@ -22,8 +22,12 @@ return {
 	-- color_scheme = 'termnial.sexy',
 	-- color_scheme = 'Catppuccin Macchiato',
 	-- default_prog = { 'bash','-l' },
-
-	default_prog = { "/opt/homebrew/bin/zellij" },
+	default_prog = {
+		"/opt/homebrew/bin/zellij",
+		"attach",
+		"--create",
+		"Default",
+	},
 	adjust_window_size_when_changing_font_size = false,
 	-- color_scheme = 'OneHalfDark',
 	color_scheme = "tokyonight_night",
@@ -122,6 +126,40 @@ return {
 				local session = os.getenv("ZELLIJ_SESSION_NAME") or "unknown"
 				os.execute("echo 'Current session: " .. session .. "' > ~/test.txt")
 			end),
+		},
+		{
+			key = "x",
+			mods = "ALT",
+			action = wezterm.action_callback(function()
+				local session = os.getenv("ZELLIJ_SESSION_NAME") or "unknown"
+				os.execute("echo 'Current session: " .. session .. "' > ~/test.txt")
+			end),
+		},
+		{
+			key = "y",
+			mods = "CMD",
+			action = wezterm.action.QuickSelectArgs({
+				patterns = {
+					-- Inside double quotes only (length > 6)
+					[["([^"]{7,})"]],
+
+					-- Inside single quotes only (length > 6)
+					[[\'([^\']{7,})\']],
+
+					-- URLs like postgres://... (value itself > 6 chars)
+					[[\b\w+://[^\s"']{7,}]],
+
+					-- File system paths (home/absolute) with final part > 6 chars
+					[[~?/?(?:[\w\.-]+/)*[\w\.-]{7,}]],
+
+					-- Relative paths (../..) where final part > 6 chars
+					[[\.\./(?:[\w\.-]+/)*[\w\.-]{7,}]],
+
+					-- Hyphenated or long words > 6 characters
+					[[\b[\w-]{7,}\b]],
+				},
+				scope_lines = 0,
+			}),
 		},
 	},
 

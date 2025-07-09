@@ -19,20 +19,35 @@ vim.o.scrolloff = 10
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
 vim.o.inccommand = "split"
 vim.o.cursorline = true
+vim.opt.termguicolors = true
+
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+-- vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+-- vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+-- vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+-- vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<M-,>", "<c-w>5<")
 vim.keymap.set("n", "<M-.>", "<c-w>5>")
 vim.keymap.set("n", "<M-t>", "<C-W>+")
 vim.keymap.set("n", "<M-s>", "<C-W>-")
--- vim.keymap.set("n", "<C-U>", "<C-U>zz")
--- vim.keymap.set("n", "<C-D>", "<C-D>zz")
+vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>qq", ":qa<CR>", { desc = "Quit all" })
+vim.keymap.set("n", "<leader>q!", ":qa!<CR>", { desc = "Force quit all" })
+
+-- Buffer Navigation
+vim.keymap.set("n", "<C-h>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
+vim.keymap.set("n", "<C-l>", "<cmd>bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<C-j>", "<C-^>", { desc = "Alternate buffer" })
+
+-- Open buffer picker (Snacks)
+vim.keymap.set("n", "<C-k>", function()
+	Snacks.picker.buffers()
+end, { desc = "Open buffer picker" })
+
+vim.keymap.set("n", "<C-;>", "<cmd>bdelete<CR>", { desc = "Delete buffer" })
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
@@ -105,9 +120,17 @@ vim.api.nvim_create_user_command("ToggleVirtualText", function()
 	}))
 end, {})
 
--- Add the descriptive mapping
-vim.keymap.set("n", "<leader>tt", ":ToggleVirtualText<CR>", {
-	noremap = true,
-	silent = true,
-	desc = "Toggle virtual text diagnostics",
-})
+-- Add the descriptive mappin
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--
+--

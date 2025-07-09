@@ -42,13 +42,27 @@ parse_selection() {
 switch_session_or_path() {
     local type="$1"
     local value="$2"
+    local session_name
+
     case "$type" in
     session)
-        zellij pipe --plugin "$PLUGIN_URL" -- "--session $value --layout default"
+        session_name="$value"
         ;;
     path)
-        local session_name
         session_name=$(basename "$value")
+        ;;
+    esac
+
+    # Trim session name if longer than 36 characters
+    if [ "${#session_name}" -gt 36 ]; then
+        session_name="${session_name:0:34}.."
+    fi
+
+    case "$type" in
+    session)
+        zellij pipe --plugin "$PLUGIN_URL" -- "--session $session_name --layout default"
+        ;;
+    path)
         zellij pipe --plugin "$PLUGIN_URL" -- "--session $session_name --cwd $value --layout default"
         ;;
     esac
@@ -73,8 +87,3 @@ ctrl-n) create_new_session ;;
     switch_session_or_path "$type" "$value"
     ;;
 esac
-
-nohup bash -c '
-  sleep 2
-  build_combined_list >> ~/.cache/zellij-session-refresh.log 2>&1
-' >/dev/null 2>&1 &

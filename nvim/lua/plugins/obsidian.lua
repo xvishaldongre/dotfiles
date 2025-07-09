@@ -16,7 +16,7 @@ return {
 		-- Note management
 		{ mode = "n", "<leader>on", ":ObsidianNew<CR>" },
 		-- {mode ="n", "<leader>ont", ":ObsidianNewFromTemplate<CR>"},
-		{ mode = "n", "<leader>or", ":ObsidianRename<CR>" },
+		-- { mode = "n", "<leader>or", ":ObsidianRename<CR>" },
 
 		-- Navigation
 		-- {mode ="n", "<leader>oo", ":ObsidianOpen<CR>"},
@@ -37,7 +37,7 @@ return {
 
 		-- Search
 		{ mode = "n", "<leader>os", ":ObsidianSearch<CR>" },
-		{ mode = "n", "<leader>ob", ":ObsidianBacklinks<CR>" },
+		-- { mode = "n", "<leader>ob", ":ObsidianBacklinks<CR>" },
 		{ mode = "n", "<leader>oa", ":ObsidianTags<CR>" },
 
 		-- Templates and checkboxes
@@ -45,7 +45,7 @@ return {
 		{ mode = "n", "<leader>ox", ":ObsidianToggleCheckbox<CR>" },
 
 		-- Workspace
-		{ mode = "n", "<leader>ow", ":ObsidianWorkspace<CR>" },
+		-- { mode = "n", "<leader>ow", ":ObsidianWorkspace<CR>" },
 	},
 	opts = {
 		-- Vault root
