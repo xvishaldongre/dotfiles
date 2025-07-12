@@ -1,89 +1,92 @@
+vim.loader.enable()
+-- Load Lazy plugin manager
 require("config.lazy")
+
+-- Section: UI Settings
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.mouse = "a"
 vim.o.showmode = false
-vim.o.undofile = true
-vim.o.ignorecase = true
-vim.o.smartcase = true
 vim.o.signcolumn = "yes"
-vim.o.updatetime = 250
-vim.o.timeoutlen = 300
-vim.o.splitright = true
-vim.o.splitbelow = true
+vim.o.cursorline = true
+vim.opt.termguicolors = true
+vim.o.scrolloff = 10
 vim.o.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 vim.o.inccommand = "split"
-vim.o.cursorline = true
-vim.o.scrolloff = 10
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
-vim.o.inccommand = "split"
-vim.o.cursorline = true
-vim.opt.termguicolors = true
+vim.o.updatetime = 250
+vim.o.timeoutlen = 300
 
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
--- vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
--- vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
--- vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
--- vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<M-,>", "<c-w>5<")
-vim.keymap.set("n", "<M-.>", "<c-w>5>")
-vim.keymap.set("n", "<M-t>", "<C-W>+")
-vim.keymap.set("n", "<M-s>", "<C-W>-")
-vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
-vim.keymap.set("n", "<leader>qq", ":qa<CR>", { desc = "Quit all" })
-vim.keymap.set("n", "<leader>q!", ":qa!<CR>", { desc = "Force quit all" })
-
--- Buffer Navigation
-vim.keymap.set("n", "<C-h>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
-vim.keymap.set("n", "<C-l>", "<cmd>bnext<CR>", { desc = "Next buffer" })
-vim.keymap.set("n", "<C-j>", "<C-^>", { desc = "Alternate buffer" })
-
--- Open buffer picker (Snacks)
-vim.keymap.set("n", "<C-k>", function()
-	Snacks.picker.buffers()
-end, { desc = "Open buffer picker" })
-
-vim.keymap.set("n", "<C-;>", "<cmd>bdelete<CR>", { desc = "Delete buffer" })
-vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
-	callback = function()
-		vim.hl.on_yank()
-	end,
-})
-
--- Sync clipboard between OS and Neovim.
---  Schedule the setting after `UiEnter` because it can increase startup-time.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-vim.schedule(function()
-	vim.o.clipboard = "unnamedplus"
-end)
-
+-- Section: Editor Behavior
+vim.o.undofile = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
 vim.o.tabstop = 4
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
-vim.o.directory = vim.fn.expand("~/.nvim/swp//") -- note the double slashes for recursive use
+vim.o.splitright = true
+vim.o.splitbelow = true
+vim.o.directory = vim.fn.expand("~/.nvim/swp//") -- Swap directory
 
+-- Section: Clipboard
+vim.schedule(function()
+	vim.o.clipboard = "unnamedplus"
+end)
+
+-- stylua: ignore start
+-- Section: Keymaps
+local map = function(mode, lhs, rhs, desc)
+	vim.keymap.set(mode, lhs, rhs, { desc = desc })
+end
+-- General
+map("n", "<Esc>", "<cmd>nohlsearch<CR>", "Clear search highlight")
+map("t", "<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode")
+map("i", "jj", "<Esc>", "Exit insert mode")
+
+-- Window Resize
+map("n", "<M-,>", "<C-w>5<", "Resize left")
+map("n", "<M-.>", "<C-w>5>", "Resize right")
+map("n", "<M-t>", "<C-w>+", "Resize up")
+map("n", "<M-s>", "<C-w>-", "Resize down")
+
+-- Scrolling
+map("n", "<C-u>", "<C-u>zz", "Scroll up centered")
+map("n", "<C-d>", "<C-d>zz", "Scroll down centered")
+
+-- Quit
+map("n", "<leader>qq", ":qa<CR>", "Quit all")
+map("n", "<leader>q!", ":qa!<CR>", "Force quit all")
+
+-- Buffers
+map("n", "<C-h>", "<cmd>bprevious<CR>", "Previous buffer")
+map("n", "<C-l>", "<cmd>bnext<CR>", "Next buffer")
+map("n", "<C-j>", "<C-^>", "Alternate buffer")
+map("n", "<C-k>", Snacks.picker.buffers, "Buffer picker")
+map("n", "<C-;>", "<cmd>bdelete<CR>", "Delete buffer")
+
+-- stylua: ignore end
+-- Section: Yank Highlight
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Highlight when yanking (copying) text",
+	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	callback = function()
+		vim.highlight.on_yank()
+	end,
+})
+
+-- Section: Hardmode (Disable Arrow Keys)
 local hardmode = true
 if hardmode then
-	-- Show an error message if a disabled key is pressed
 	local msg = [[<cmd>echohl Error | echo "KEY DISABLED" | echohl None<CR>]]
 
-	-- Disable arrow keys in insert mode with a styled message
+	-- Insert mode
 	vim.api.nvim_set_keymap("i", "<Up>", "<C-o>" .. msg, { noremap = true, silent = false })
 	vim.api.nvim_set_keymap("i", "<Down>", "<C-o>" .. msg, { noremap = true, silent = false })
 	vim.api.nvim_set_keymap("i", "<Left>", "<C-o>" .. msg, { noremap = true, silent = false })
 	vim.api.nvim_set_keymap("i", "<Right>", "<C-o>" .. msg, { noremap = true, silent = false })
-	-- vim.api.nvim_set_keymap("i", "<Del>", "<C-o>" .. msg, { noremap = true, silent = false })
-	-- vim.api.nvim_set_keymap("i", "<BS>", "<C-o>" .. msg, { noremap = true, silent = false })
 
-	-- Disable arrow keys in normal mode with a styled message
+	-- Normal mode
 	vim.api.nvim_set_keymap("n", "<Up>", msg, { noremap = true, silent = false })
 	vim.api.nvim_set_keymap("n", "<Down>", msg, { noremap = true, silent = false })
 	vim.api.nvim_set_keymap("n", "<Left>", msg, { noremap = true, silent = false })
@@ -91,15 +94,14 @@ if hardmode then
 	vim.api.nvim_set_keymap("n", "<BS>", msg, { noremap = true, silent = false })
 end
 
--- Make CursorHold show a floating diagnostic
-vim.o.updatetime = 250
-vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+-- Section: Floating Diagnostics on CursorHold
+vim.api.nvim_create_autocmd({ "CursorHold" }, {
 	callback = function()
 		vim.diagnostic.open_float(nil, { focus = false })
 	end,
 })
 
--- Apply your “no virtual text by default” *after* any LSP attaches
+-- Section: LSP Diagnostic Config
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function()
 		vim.diagnostic.config({
@@ -112,7 +114,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
--- Define your toggle command
+-- Section: Toggle Diagnostic Virtual Text
 vim.api.nvim_create_user_command("ToggleVirtualText", function()
 	local cfg = vim.diagnostic.config()
 	vim.diagnostic.config(vim.tbl_extend("force", cfg, {
@@ -120,17 +122,11 @@ vim.api.nvim_create_user_command("ToggleVirtualText", function()
 	}))
 end, {})
 
--- Add the descriptive mappin
---
---
---
---
---
---
---
---
---
---
---
---
---
+vim.api.nvim_create_autocmd("WinLeave", {
+	callback = function()
+		local config = vim.api.nvim_win_get_config(0)
+		if config.relative ~= "" then
+			vim.api.nvim_win_close(0, false)
+		end
+	end,
+})

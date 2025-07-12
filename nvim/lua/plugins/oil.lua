@@ -1,7 +1,6 @@
 return {
 	"stevearc/oil.nvim",
 	event = "VeryLazy",
-
 	---@module 'oil'
 	---@type oil.SetupOpts
 	opts = {
@@ -93,7 +92,11 @@ return {
 			end,
 			-- This function defines what will never be shown, even when `show_hidden` is set
 			is_always_hidden = function(name, bufnr)
-				return false
+				local always_hidden = {
+					[".."] = true,
+					[".DS_Store"] = true,
+				}
+				return always_hidden[name] or false
 			end,
 			-- Sort file names with numbers in a more intuitive order for humans.
 			-- Can be "fast", true, or false. "fast" will turn it off for large directories.
@@ -210,7 +213,6 @@ return {
 	dependencies = { { "echasnovski/mini.icons", opts = {} } },
 	-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
 	-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
-	lazy = false,
 	keys = {
 		-- vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open Oil" })
 		{ "-", "<CMD>Oil<CR>", desc = "Open Oil", mode = "n" },

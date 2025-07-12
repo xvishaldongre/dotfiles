@@ -9,7 +9,6 @@ return {
 	ft = "markdown",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"echasnovski/mini.pick",
 		"nvim-treesitter/nvim-treesitter",
 	},
 	keys = {
