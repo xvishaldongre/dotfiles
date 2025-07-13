@@ -64,11 +64,10 @@ return {
         -- Top Pickers & Explorer
         { "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
         { "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
-        { "<leader>/", function() Snacks.picker.grep() end, desc = "Grep" },
+        -- { "<leader>/", function() Snacks.picker.grep() end, desc = "Grep" },
         { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
         { "<leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
         { "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
-        { "<leader>z", function() Snacks.picker.zoxide() end, desc = "Zoxide" },
         -- find
         { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
         { "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
@@ -76,6 +75,7 @@ return {
         { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Git Files" },
         { "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects" },
         { "<leader>fr", function() Snacks.picker.recent() end, desc = "Recent" },
+        { "<leader>fz", function() Snacks.picker.zoxide() end, desc = "Zoxide" },
         -- git
         { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
         { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
@@ -125,8 +125,8 @@ return {
         { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
         { "<leader>S",  function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
         { "<leader>n",  function() Snacks.notifier.show_history() end, desc = "Notification History" },
-        { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
-        { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
+        -- { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
+        -- { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
         { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
         { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
         { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },

@@ -26,10 +26,10 @@ return {
 			go = { "goimports", "gofumpt" },
 		},
 	},
-	config = function(_, opts)
-		require("conform").setup(opts)
-		vim.keymap.set({ "n", "v" }, "<leader>cf", function()
-			require("conform").format({ async = true, lsp_fallback = true })
-		end, { desc = "Format buffer with Conform" })
-	end,
+	-- config = function(_, opts)
+	-- 	require("conform").setup(opts)
+	-- 	vim.keymap.set({ "n", "v" }, "<leader>cf", function()
+	-- 		require("conform").format({ async = true, lsp_fallback = true })
+	-- 	end, { desc = "Format buffer with Conform" })
+	-- end,
 }

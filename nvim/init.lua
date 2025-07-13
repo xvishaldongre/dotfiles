@@ -39,7 +39,7 @@ end)
 local map = function(mode, lhs, rhs, desc)
 	vim.keymap.set(mode, lhs, rhs, { desc = desc })
 end
-map("n","<leader>l","<cmd>Lazy<CR>", "Lazy")
+map("n","<leader>cl","<cmd>Lazy<CR>", "Lazy")
 -- General
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", "Clear search highlight")
 map("t", "<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode")

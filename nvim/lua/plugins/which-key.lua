@@ -45,9 +45,15 @@ return { -- Useful plugin to show you pending keybinds.
 
 		-- Document existing key chains
 		spec = {
-			{ "<leader>s", group = "[S]earch" },
-			{ "<leader>t", group = "[T]oggle" },
-			{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+			{ "<leader>s", group = "Search" },
+			{ "<leader>o", group = "Obsidian", icon = { icon = "󱂷", color = "orange" } },
+			{ "<leader>f", group = "Find" },
+			{ "<leader>g", group = "Git" },
+			{ "<leader>q", group = "Quit" },
+			{ "<leader>u", group = "UI" },
+			{ "<leader>c", group = "Configure", icon = { icon = "", color = "purple" } },
+
+			{ "<leader>x", group = "Trouble" },
 		},
 	},
 }
