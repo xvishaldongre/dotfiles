@@ -1,4 +1,5 @@
 # Aliases
+
 alias c='code'
 alias e='exit'
 alias g='grep --color -iE'
@@ -12,3 +13,17 @@ alias tm='tmux'
 alias v='nvim'
 alias vim='nvim'
 alias n='zk -W ~/Documents/Notes new --title'
+
+
+gc() {
+  if [ $# -eq 0 ]; then
+    echo "Usage: git-clonez <repo-url> [custom-dir-name]"
+    return 1
+  fi
+
+  repo_url="$1"
+  dest_dir="${2:-$(basename "$repo_url" .git)}"
+
+  git clone "$repo_url" "$dest_dir" && zoxide add "$dest_dir"
+}
+
