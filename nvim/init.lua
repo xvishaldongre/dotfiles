@@ -40,6 +40,14 @@ local map = function(mode, lhs, rhs, desc)
 	vim.keymap.set(mode, lhs, rhs, { desc = desc })
 end
 map("n","<leader>cl","<cmd>Lazy<CR>", "Lazy")
+-- Stole from ThePrimeagen
+map("v", "J", ":m '>+1<CR>gv=gv", "Move selection down")
+map("v", "K", ":m '<-2<CR>gv=gv", "Move selection up")
+map("n", "n", "nzzzv", "Next search result centered")
+map("n", "N", "Nzzzv", "Previous search result centered")
+map({ "n", "v" }, "<leader>d", [["_d]], "Delete without affecting clipboard")
+map({ "n", "v" }, "<leader>x", [["_x]], "Delete char without affecting clipboard")
+
 -- General
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", "Clear search highlight")
 map("t", "<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode")

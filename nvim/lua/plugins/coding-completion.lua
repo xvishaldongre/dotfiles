@@ -68,7 +68,7 @@ return {
 					},
 				},
 				ghost_text = {
-					enabled = true,
+					enabled = false,
 				},
 				menu = {
 					auto_show = true,
