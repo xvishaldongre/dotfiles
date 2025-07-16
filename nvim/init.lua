@@ -131,11 +131,11 @@ vim.api.nvim_create_user_command("ToggleVirtualText", function()
 	}))
 end, {})
 
-vim.api.nvim_create_autocmd("WinLeave", {
-	callback = function()
-		local config = vim.api.nvim_win_get_config(0)
-		if config.relative ~= "" then
-			vim.api.nvim_win_close(0, false)
-		end
-	end,
-})
+vim.api.nvim_create_user_command("ListWins", function()
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local buf = vim.api.nvim_win_get_buf(win)
+		local cfg = vim.api.nvim_win_get_config(win)
+		local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+		print(string.format("win=%d buf=%d ft=%s relative=%s", win, buf, ft, tostring(cfg.relative)))
+	end
+end, { desc = "List all windows with config info" })
