@@ -27,6 +27,7 @@ require("lazy").setup({
 		-- import your plugins
 		{ import = "plugins" },
 	},
+	keys = { { "<leader>cl", "<cmd>Lazy<cr>", desc = "Lazy" } },
 	-- Configure any other settings here. See the documentation for more details.
 	-- colorscheme that will be used when installing plugins.
 	-- install = { colorscheme = { "tokyonight", "habamax" } },

@@ -4,7 +4,6 @@ local expand = vim.fn.expand
 return {
 	"obsidian-nvim/obsidian.nvim",
 	version = "*",
-	lazy = true,
 	event = "VeryLazy",
 	ft = "markdown",
 	dependencies = {

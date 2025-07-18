@@ -3,6 +3,7 @@ return {
 	enabled = true,
 	priority = 1000,
 	name = "vague",
+	dependencies = { "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
 	-- opts = {
 	--     transparent = true,
 	--     on_highlights = function(highlights, colors)
