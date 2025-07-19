@@ -1,4 +1,5 @@
 return {
 	"sindrets/diffview.nvim",
-	event = "VeryLazy",
+	-- event = "VeryLazy",
+	cmd = { "DiffviewOpen", "DiffviewToggleFiles" },
 }

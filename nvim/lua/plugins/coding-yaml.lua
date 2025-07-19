@@ -2,6 +2,7 @@ return {
 	"cenk1cenk2/schema-companion.nvim",
 	ft = "yaml", -- only load on YAML files
 	dependencies = { "nvim-lua/plenary.nvim" },
+    
 	config = function()
 		require("schema-companion").setup({
 			enable_telescope = false,

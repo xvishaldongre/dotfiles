@@ -18,7 +18,7 @@ return {
 					layout = {
 						layout = {
 							position = "left",
-							width = 0.25, -- 20% of Neovim width
+							width = 0.22, -- 22% of Neovim width
 							height = 0.8, -- optional: to set height too
 						},
 						auto_hide = { "input" },

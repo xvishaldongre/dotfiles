@@ -4,46 +4,39 @@ local expand = vim.fn.expand
 return {
 	"obsidian-nvim/obsidian.nvim",
 	version = "*",
-	event = "VeryLazy",
+	lazy = true,
 	ft = "markdown",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-treesitter/nvim-treesitter",
 	},
 	keys = {
-		-- Note management
-		{ mode = "n", "<leader>on", ":ObsidianNew<CR>" },
-		-- {mode ="n", "<leader>ont", ":ObsidianNewFromTemplate<CR>"},
-		-- { mode = "n", "<leader>or", ":ObsidianRename<CR>" },
+		-- Note Management
+		{ mode = "n", "<leader>on", ":ObsidianNew<CR>", desc = "New note" },
 
 		-- Navigation
-		-- {mode ="n", "<leader>oo", ":ObsidianOpen<CR>"},
-		{ mode = "n", "<leader>oq", ":ObsidianQuickSwitch<CR>" },
-		{ mode = "n", "<leader>of", ":ObsidianFollowLink<CR>" },
-		{ mode = "n", "<leader>oj", ":ObsidianTOC<CR>" },
+		{ mode = "n", "<leader>oq", ":ObsidianQuickSwitch<CR>", desc = "Quick switch" },
+		{ mode = "n", "<leader>of", ":ObsidianFollowLink<CR>", desc = "Follow link" },
+		{ mode = "n", "<leader>oj", ":ObsidianTOC<CR>", desc = "Table of contents" },
 
-		-- Daily notes
-		{ mode = "n", "<leader>ot", ":ObsidianToday<CR>" },
-		{ mode = "n", "<leader>oy", ":ObsidianYesterday<CR>" },
-		{ mode = "n", "<leader>oT", ":ObsidianTomorrow<CR>" },
-		{ mode = "n", "<leader>od", ":ObsidianDailies<CR>" },
+		-- Daily Notes
+		{ mode = "n", "<leader>ot", ":ObsidianToday<CR>", desc = "Open today’s note" },
+		{ mode = "n", "<leader>oy", ":ObsidianYesterday<CR>", desc = "Open yesterday’s note" },
+		{ mode = "n", "<leader>oT", ":ObsidianTomorrow<CR>", desc = "Open tomorrow’s note" },
+		{ mode = "n", "<leader>od", ":ObsidianDailies<CR>", desc = "Browse dailies" },
 
 		-- Linking
-		{ mode = "n", "<leader>ol", ":ObsidianLink<CR>" },
-		{ mode = "n", "<leader>oL", ":ObsidianLinkNew<CR>" },
-		{ mode = "n", "<leader>ok", ":ObsidianLinks<CR>" },
+		{ mode = "n", "<leader>ol", ":ObsidianLink<CR>", desc = "Insert link" },
+		{ mode = "n", "<leader>oL", ":ObsidianLinkNew<CR>", desc = "Insert new link" },
+		{ mode = "n", "<leader>ok", ":ObsidianLinks<CR>", desc = "List backlinks" },
 
-		-- Search
-		{ mode = "n", "<leader>os", ":ObsidianSearch<CR>" },
-		-- { mode = "n", "<leader>ob", ":ObsidianBacklinks<CR>" },
-		{ mode = "n", "<leader>oa", ":ObsidianTags<CR>" },
+		-- Search & Tags
+		{ mode = "n", "<leader>os", ":ObsidianSearch<CR>", desc = "Search vault" },
+		{ mode = "n", "<leader>oa", ":ObsidianTags<CR>", desc = "Show tags" },
 
-		-- Templates and checkboxes
-		{ mode = "n", "<leader>op", ":ObsidianTemplate<CR>" },
-		{ mode = "n", "<leader>ox", ":ObsidianToggleCheckbox<CR>" },
-
-		-- Workspace
-		-- { mode = "n", "<leader>ow", ":ObsidianWorkspace<CR>" },
+		-- Templates & Checkboxes
+		{ mode = "n", "<leader>op", ":ObsidianTemplate<CR>", desc = "Insert template" },
+		{ mode = "n", "<leader>ox", ":ObsidianToggleCheckbox<CR>", desc = "Toggle checkbox" },
 	},
 	opts = {
 		-- Vault root
@@ -103,8 +96,9 @@ return {
 		-- Completion and picker settings
 		----------------------------------------------------------------
 		completion = {
+			nvim_cmp = false,
 			blink = true,
-			min_chars = 2,
+			min_chars = 1,
 		},
 
 		picker = {

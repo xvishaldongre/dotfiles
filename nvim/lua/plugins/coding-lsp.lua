@@ -27,14 +27,38 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
+		-- Mason itself only on the :Mason command
 		{
 			"williamboman/mason.nvim",
-			keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
-			opts = { ui = { border = "rounded" } },
+			cmd = "Mason",
+			keys = {
+				{ "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" },
+			},
+			opts = {
+				ui = { border = "rounded" },
+			},
 		},
-		"williamboman/mason-lspconfig.nvim",
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		{ "j-hui/fidget.nvim", opts = {} },
+
+		-- these two kick in *after* Mason is loaded
+		{
+			"williamboman/mason-lspconfig.nvim",
+			after = "mason.nvim",
+			config = true, -- auto-setup servers if you like
+		},
+		{
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			after = "mason.nvim",
+			opts = {
+				-- list your tools here, e.g. "lua-language-server", "pyright", etc.
+			},
+		},
+
+		-- Fidget shows up as soon as an LSP attaches
+		{
+			"j-hui/fidget.nvim",
+			event = "LspAttach",
+			opts = {},
+		},
 	},
 	config = function()
 		local lspconfig = require("lspconfig")

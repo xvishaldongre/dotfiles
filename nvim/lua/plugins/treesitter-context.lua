@@ -1,6 +1,6 @@
 return {
 	"nvim-treesitter/nvim-treesitter-context",
-	event = "VeryLazy",
+	event = "BufReadPre",
 	enabled = true,
 	opts = {
 		enable = true,
