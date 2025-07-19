@@ -21,6 +21,7 @@ return {
 		distance_stop_animating = 0.5, -- 0.1      > 0
 		legacy_computing_symbols_support = false,
 		smear_insert_mode = false,
+		smear_between_buffers = false,
 	},
 	specs = {
 		-- disable mini.animate cursor

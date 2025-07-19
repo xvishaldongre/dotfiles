@@ -16,6 +16,7 @@ vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 vim.o.inccommand = "split"
 vim.o.updatetime = 250
 vim.o.timeoutlen = 300
+vim.o.laststatus = 3
 
 -- Section: Editor Behavior
 vim.o.undofile = true

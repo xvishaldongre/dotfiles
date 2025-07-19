@@ -42,15 +42,20 @@ require("lazy").setup({
 		},
 		rtp = {
 			disabled_plugins = {
-				"gzip",
-				-- "matchit",
-				-- "matchparen",
-				-- "netrwPlugin",
-				"rplugin",
-				"tarPlugin",
-				"tohtml",
-				-- "tutor",
-				"zipPlugin",
+				"gzip", -- disable unless you open .gz files
+				"zipPlugin", -- disable unless you need .zip browsing
+				"tarPlugin", -- disable unless you open .tar archives
+				"tohtml", -- disable unless you use :TOhtml export
+				-- "tutor", -- disable if you’re past the beginner stage
+				"editorconfig", -- optional: enable if you use editorconfig
+				-- "man", -- optional: enable if you view man pages in `:Man`
+				-- "matchit", -- useful: enables % across blocks/tags
+				-- "matchparen", -- useful: shows cursor matching brackets
+				"netrwPlugin", -- enable if you still use netrw for file browsing
+				"rplugin", -- disables remote plugin loader (if you're not using plugins like fzf-rs)
+				"shada", -- disable only if you don't want session/journal/history persistence
+				"spellfile", -- disable if you don't use spell checking
+				"osc52", -- leave enabled if you use clipboard copy over SSH
 			},
 		},
 	},

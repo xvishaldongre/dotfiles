@@ -23,6 +23,7 @@ return {
 	opts = {
 		highlight = { enable = true },
 		indent = { enable = true },
+		pairs = { enable = true },
 		ensure_installed = {
 			"bash",
 			"c",
