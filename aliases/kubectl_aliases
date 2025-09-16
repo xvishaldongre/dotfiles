@@ -1,0 +1,193 @@
+# Kubectl Aliases
+## add aliases collection from https://github.com/ahmetb/kubectl-aliases
+[ ! -f ~/.kube/aliases.sh ] && curl -fsSL "https://raw.githubusercontent.com/ahmetb/kubectl-aliases/master/.kubectl_aliases" > ~/.kube/aliases.sh 
+source ~/.kube/aliases.sh
+
+## add kubech - kubectl contexts/namespaces per shell/terminal
+[ ! -f ~/.kube/kubech ] && curl -fsSL "https://raw.githubusercontent.com/DevOpsHiveHQ/kubech/master/kubech" > ~/.kube/kubech && chmod +x ~/.kube/kubech
+source ~/.kube/kubech
+
+alias k="kubectl"
+# alias kc="kubectl-ctx"
+alias kn="kubens"
+alias x='kubechc | fzf | read -r context && kubechc $context && echo Switched to context "$context"'
+
+function kc() {
+  kubectl-ctx "$1" 2>/dev/null || ( \
+    cat ~/.kube/config | yq -r '.contexts[] | .name + " " + .context.cluster' | \
+    sed 's#^\(.*\) arn:\(.*\)/\(.*\)$#\1 \3#g' | sed 's/ /:/g' | fzf | cut -d ':' -f 1 | \
+    read -r selected_context && \
+    kubectl config use-context "$selected_context";
+  )
+}
+
+
+## when using below aliases, print kubectl command and then execute it
+function kubectl() { 
+  if ! [[ "$@" =~ -A ]] && ! [[ "$@" =~ -o ]]; then
+    echo "+ kubectl $@" >&2  # Print to stderr only if neither -A nor -o is present
+  fi
+  command kubecolor "$@"       # Always execute the kubectl command
+}
+
+## set default namespace
+alias kn='kubectl config set-context --current --namespace'
+## get events sorted by last timestamp
+alias kgel='kubectl get events --sort-by=.lastTimestamp'
+## get events sorted by creation timestamp
+alias kgec='kubectl get events --sort-by=.metadata.creationTimestamp'
+## get pod's descending events
+function kger() { kubectl get events --sort-by=.lastTimestamp --field-selector involvedObject.name="$@" }
+## get 'real' all
+alias kgworld='kubectl get $(kubectl api-resources --verbs=list --namespaced -o name | paste -sd ",")'
+## display all nodes resources request and limits
+alias kgnr="k get nodes --no-headers | awk '{print \$1}' | xargs -I {} sh -c 'echo {} ; kubectl describe node {} | grep Allocated -A 5 | grep -ve Event -ve Allocated -ve percent -ve -- ; echo '"
+## start a debug pod (including lots of troubleshooting tools)
+alias kdebug="kubectl -n default run debug-$USER --rm -it --tty --image leodotcloud/swiss-army-knife:v0.12 --image-pull-policy=IfNotPresent -- bash"
+## get pod's containers list
+function kgpc() { kubectl get pod -o jsonpath="{.spec.containers[*].name}" "$@" && echo "" }
+## ping a service, ex: 'kping whoami:8080'
+alias kping='kubectl run httping -it --image bretfisher/httping --image-pull-policy=IfNotPresent --rm=true --'
+## get existing pod's yaml without forbidden fields, ex: 'kyaml pod whoami'
+function kyaml() { kubectl get "$@" -o yaml | kubectl-neat }
+## display and delete failed pods in current namespace
+alias krmfailed='kubectl delete pods --field-selector=status.phase=Failed'
+
+# kubectl exec into a pod interactively
+kei() {
+  kubectl get pods -A | grep -v "using proxy" | tail -n +2 | grep -i running | fzf | awk '{print $1, $2}' | read namespace pod_name; 
+  ## Try to start bash, if not available, try ash, if not available, try sh
+  echo "kubectl exec -i -t -n $namespace $pod_name -- sh -c 'bash || ash || sh || echo \"No shell available\"'"; \
+  kubectl exec -i -t -n $namespace $pod_name -- sh -c 'bash || ash || sh || echo \"No shell available\"';
+  unset namespace pod_name
+}
+
+## kubectl get secret interactively
+ksd() {
+    kubectl get secret -A | grep -v "using proxy"  | tail -n +2 | fzf -m | awk '{print $1, $2}' | while read -r namespace secret_name; do 
+      echo "+ kubectl get secret $secret_name -n $namespace -o json | jq \".data | map_values(@base64d)\""
+      kubectl get secret $secret_name -n $namespace -o json | jq ".data | map_values(@base64d)"
+    done
+    unset namespace secret_name
+}
+
+ksdf () {
+  ksd | grep --color -i $1
+}
+
+## kubectl rollout restart deployment interactively
+kdr() {
+  kubectl get deployments -A | tail -n +2 | fzf -m | awk '{print $1, $2}' | while read -r namespace deployment; do
+    ## kubectl rollout restart deployment "$deployment" -n "$namespace"
+    echo "kubectl rollout restart deployment $deployment -n $namespace"
+    kubectl rollout restart deployment "$deployment" -n "$namespace"
+  done
+}
+
+## kubectl get deployment YAML interactively
+kdy() {
+  kubectl get deployments -A | tail -n +2 | fzf -m | awk '{print $1, $2}' | while read -r namespace deployment; do
+    ## Save YAML file for the deployment
+    echo "Downloading YAML for deployment $deployment in namespace $namespace"
+    kubectl get deployment "$deployment" -n "$namespace" -o yaml | kubectl neat > "${deployment}_${namespace}.yaml"
+  done
+}
+
+ky() {
+  # Check if a resource name is provided as an argument
+  if [[ -z "$1" ]]; then
+    echo "Usage: ky <resource_name> [omit_details_in_filename]"
+    echo "  <resource_name>: The type of Kubernetes resource (e.g., deployment, pod, connector)."
+    echo "  [omit_details_in_filename]: (Optional) Type 'true' or 'yes' or 'y' to save as <name>.yaml."
+    echo "                                Otherwise, saves as <namespace>_<resource>_<name>.yaml."
+    echo "Examples:"
+    echo "  ky deployment"
+    echo "  ky pod yes"
+    echo "  ky connector true"
+    return 1
+  fi
+
+  local resource_name="$1"
+  local omit_details_in_filename="${2:-false}" # Default to false if second arg is not provided
+  local selected_items
+
+  # Convert omit_details_in_filename to lowercase for easier comparison
+  omit_details_in_filename=$(echo "$omit_details_in_filename" | tr '[:upper:]' '[:lower:]')
+
+  # Get all resources of the given type across all namespaces,
+  # skip header, let user select one or more with fzf
+  selected_items=$(kubectl get "$resource_name" -A --no-headers=true | fzf --prompt="Select ${resource_name}(s) > " -m)
+
+  # Check if fzf returned any selection
+  if [[ -z "$selected_items" ]]; then
+    echo "No items selected."
+    return 0
+  fi
+
+  # Process each selected item
+  echo "$selected_items" | while IFS= read -r line; do
+    # awk output gives "namespace name ...", so we extract them
+    local namespace=$(echo "$line" | awk '{print $1}')
+    local name=$(echo "$line" | awk '{print $2}')
+    # Handle cases where the name might contain more parts if the resource type has a weird display format
+    # This is a simple way; for very complex output from `kubectl get`, parsing might need to be more robust.
+    if [[ $(echo "$line" | awk '{print NF}') -gt 2 ]]; then
+        name=$(echo "$line" | awk '{ $1=""; sub(/^[ \t]+/, ""); print $0 }' | awk '{print $1}')
+    fi
+
+    local filename
+
+    # Sanitize name for filename (replace slashes, common in some sub-resources or specific CRDs)
+    local sanitized_name="${name//\//_}"
+
+    # Construct the filename based on the omit_details_in_filename flag
+    if [[ "$omit_details_in_filename" == "true" || "$omit_details_in_filename" == "yes" || "$omit_details_in_filename" == "y" ]]; then
+      filename="${sanitized_name}.yaml"
+    else
+      filename="${namespace}_${resource_name}_${sanitized_name}.yaml"
+    fi
+
+    echo "Downloading YAML for ${resource_name} \"${name}\" in namespace \"${namespace}\" to ${filename}"
+
+    if ! kubectl get "$resource_name" "$name" -n "$namespace" -o yaml | kubectl neat > "$filename"; then
+      echo "Error downloading YAML for ${resource_name} \"${name}\" in namespace \"${namespace}\"."
+      # rm -f "$filename" # Optionally remove the partially created file
+    else
+      echo "Saved: ${filename}"
+    fi
+  done
+}
+
+kgrep() {
+  local base_cmd="$1"
+  shift
+  if [ $# -gt 0 ]; then
+    eval "$base_cmd" | grep -iE "$*"
+  else
+    eval "$base_cmd"
+  fi
+}
+
+alias xpc='kgrep "kubecolor --force-colors get pods -A" "error|fail|exception|crash"'
+alias xp='kgrep "kubecolor --force-colors get pods -A"'
+alias xd='kgrep "kubecolor --force-colors get deployments -A"'
+# statefull
+alias xs='kgrep "kubecolor --force-colors get statefulsets -A"'
+alias xsv='kgrep "kubecolor --force-colors get services -A"'
+alias xi='kgrep "kubecolor --force-colors get ingresses -A"'
+alias xc='kgrep "kubecolor --force-colors get configmaps -A"'
+
+ff() {
+  echo "=== Deployments matching '$1' ==="
+  kubecolor --force-colors get deployments -A | grep -iE "$1"
+
+  echo "=== Statefulsets matching '$1' ==="
+  kubecolor --force-colors get statefulsets -A | grep -iE "$1"
+
+  echo "=== Pods matching '$1' ==="
+  kubecolor --force-colors get pods -A | grep -iE "$1"
+}
+
+alias l='stern'
+alias l='stern -E istio-proxy -E istio-init'
+alias ln='stern -E istio-proxy -E istio-init -n'
