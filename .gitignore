@@ -1,2 +1,3 @@
 gh/hosts.yml
 *.zwc
+/tmux/plugins/

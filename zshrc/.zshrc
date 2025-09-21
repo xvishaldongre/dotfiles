@@ -24,15 +24,15 @@ setopt HIST_IGNORE_SPACE HIST_IGNORE_DUPS SHARE_HISTORY
 zle_highlight=('paste:none')
 
 # Completion styles
-zstyle ':completion::*:*:*:*:*' insecure 'yes'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path "$HOME/.cache/zsh/completion"
-zstyle ':completion:*' format ''
+# zstyle ':completion::*:*:*:*:*' insecure 'yes'
+# zstyle ':completion:*' use-cache on
+# zstyle ':completion:*' cache-path "$HOME/.cache/zsh/completion"
+# zstyle ':completion:*' format ''
 
 # Source local alias files
 source ~/.config/aliases/aliases
-source ~/.config/aliases/kubectl_aliases
-source ~/.config/private_aliases.sh
+# source ~/.config/aliases/kubectl_aliases
+# source ~/.config/private_aliases.sh
 source ~/.config/aliases/git_worktree.sh
 # source ~/.config/zshrc/bindkey.sh
 
