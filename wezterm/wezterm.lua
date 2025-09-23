@@ -7,7 +7,7 @@ return {
 
     -- Terminal size
     initial_cols = 180,
-    initial_rows = 45,
+    initial_rows = 47,
 
     -- Color scheme
     color_scheme = "tokyonight_night",

@@ -13,7 +13,7 @@ alias tm='tmux'
 alias v='nvim'
 alias vim='nvim'
 alias n='zk -W ~/Documents/Notes new --title'
-
+alias npm='pnpm'
 
 gc() {
   if [ $# -eq 0 ]; then
