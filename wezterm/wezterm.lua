@@ -64,5 +64,5 @@ return {
     },
 
     -- Performance
-    max_fps = 240,
+    max_fps = 120,
 }
