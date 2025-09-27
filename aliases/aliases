@@ -3,16 +3,9 @@
 alias c='code'
 alias e='exit'
 alias g='grep --color -iE'
-alias tf='terraform'
-alias tfa='terraform apply'
-alias tfd='terraform destroy'
-alias tfi='terraform init'
-alias tfp='terraform plan'
-alias tl='task -g --list-all'
-alias tm='tmux'
+alias t='tmux'
 alias v='nvim'
 alias vim='nvim'
-alias n='zk -W ~/Documents/Notes new --title'
 alias npm='pnpm'
 
 gc() {
