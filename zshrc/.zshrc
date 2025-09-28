@@ -4,13 +4,11 @@ source ~/Repos/znap/znap.zsh  # Start Znap
 
 # Environment Variables
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
-export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_NO_VERIFY_ATTESTATIONS=1
-export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
-export PATH="/opt/homebrew/opt/libpq/bin:/opt/local/bin:/opt/local/sbin:~/.adaptive/bin:$PATH"
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 export EDITOR=nvim
 export VISUAL=nvim
-
+. "$HOME/.atuin/bin/env"
 # Bash style comments
 setopt interactivecomments
 
@@ -55,7 +53,6 @@ znap source Aloxaf/fzf-tab
 znap eval starship 'starship init zsh --print-full-init'
 znap eval zoxide 'zoxide init zsh'
 znap eval atuin 'atuin init zsh --disable-up-arrow'
-
+znap eval mise 'mise activate zsh'
 # Optimize prompt loading
 znap prompt
-

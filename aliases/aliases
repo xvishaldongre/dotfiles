@@ -4,9 +4,8 @@ alias c='code'
 alias e='exit'
 alias g='grep --color -iE'
 alias t='tmux'
-alias v='nvim'
-alias vim='nvim'
-alias npm='pnpm'
+alias v='XDG_CACHE_HOME=/tmp nvim'
+alias vim='XDG_CACHE_HOME=/tmp nvim'
 
 gc() {
   if [ $# -eq 0 ]; then
