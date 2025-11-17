@@ -5,6 +5,7 @@ local custom_tokyonight = wezterm.color.get_builtin_schemes()["tokyonight_night"
 custom_tokyonight.background = "#222226"
 return {
 	-- Font settings
+	default_prog = { "zsh", "-l", "-c", "tmux new-session -A -s 0" },
 	font = wezterm.font("FiraCode Nerd Font Mono", { weight = 600, stretch = "Normal", style = "Normal" }),
 	font_size = 10,
 
