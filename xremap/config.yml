@@ -1,0 +1,27 @@
+modmap:
+  - name: CapsLock Dual Role
+    remap:
+      CapsLock: Ctrl_L
+
+keymap:
+  - name: Global Shortcuts
+    remap:
+      # Your previous jumpapp shortcut
+      ALT_R-t:
+        launch: ["jumpapp", "-f", "wezterm"]
+      ALT_R-g:
+        launch: ["jumpapp", "-f", "glide-bin"]
+      ALT_R-e:
+        launch: ["jumpapp", "-f", "nemo"]
+      ALT_R-v:
+        launch: ["jumpapp", "-f", "code"]
+  - name: Close App
+    remap:
+      ALT-q: ALT-F4
+  - name: Copy Paste Select
+    application:
+      not: wezterm-gui
+    remap:
+      ALT-c: Ctrl-c
+      ALT-v: Ctrl-v
+      ALT-a: Ctrl-a
