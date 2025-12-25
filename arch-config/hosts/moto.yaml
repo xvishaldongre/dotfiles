@@ -21,16 +21,21 @@ packages:
   - mise
   - docker
   - lima-bin
-  
+
   # GUI Apps
-  - wezterm-git 
-  - glide-browser-bin
+  - wezterm-git
+  - glide-browser-bin # Web browser with vim keybindings
   - visual-studio-code-bin
   - vlc
-  - vlc-plugins-all 
+  - vlc-plugins-all
+  - pix # Image viewer
+  - xreader # PDF reader
+  - xed # Text editor
+  - galculator # Calculator
+  - freeoffice # Office Suite
 
   # Fonts
-  - ttf-jetbrains-mono-nerd 
+  - ttf-jetbrains-mono-nerd
   # Other
   - xremap
   - jumpapp
@@ -50,8 +55,8 @@ exclude: []
 
 # Configuration backup settings
 config_backups:
-  enabled: true      # Auto-backup on sync
-  max_backups: 5     # Keep last 5 backups (0 = unlimited)
+  enabled: true # Auto-backup on sync
+  max_backups: 5 # Keep last 5 backups (0 = unlimited)
 
 # Settings
 flatpak_scope: user
