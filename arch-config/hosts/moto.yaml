@@ -1,0 +1,62 @@
+# Host configuration for moto
+# Personal Laptop
+
+host: moto
+description: Personal Laptop
+
+# Enabled modules
+enabled_modules: []
+
+# Host-specific packages
+packages:
+  # CLI Tools
+  - neovim
+  - tmux
+  - stow
+  - git
+  - starship
+  - zoxide
+  - atuin
+  - fzf
+  - mise
+  - docker
+  - lima-bin
+  
+  # GUI Apps
+  - wezterm-git 
+  - glide-browser-bin
+  - visual-studio-code-bin
+  - vlc
+  - vlc-plugins-all 
+
+  # Fonts
+  - ttf-jetbrains-mono-nerd 
+  # Other
+  - xremap
+  - jumpapp
+  - cloudflare-warp-bin
+
+  # Cinnamon DE
+  - cinnamon
+  - mint-themes
+  - mint-y-icons
+  - bibata-cursor-theme
+  - lightdm
+  - lightdm-slick-greeter
+  - lightdm-settings
+
+# Exclude packages from base or modules
+exclude: []
+
+# Configuration backup settings
+config_backups:
+  enabled: true      # Auto-backup on sync
+  max_backups: 5     # Keep last 5 backups (0 = unlimited)
+
+# Settings
+flatpak_scope: user
+auto_prune: false
+backup_tool: snapper
+
+# AUR helper to use (auto-detects paru or yay if not specified)
+# aur_helper: paru   # Options: paru, yay, or any AUR helper
