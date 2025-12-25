@@ -64,7 +64,7 @@ return {
 			-- Inline Code
 			----------------------------------------------------------------
 			inline_code = {
-				enabled = true,
+				enabled = false,
 				background = true,
 			},
 
@@ -103,7 +103,7 @@ return {
 			-- Block Quotes
 			----------------------------------------------------------------
 			block_quotes = {
-				enabled = true,
+				enabled = false,
 				icon = "❝",
 				color = nil,
 				line_breaks = 1,
