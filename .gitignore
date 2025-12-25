@@ -1,3 +1,12 @@
+# Github CLI 
 gh/hosts.yml
+
+# zsh cache
 *.zwc
+
+# tmux plugins
 /tmux/plugins/
+
+# glide browser
+glide/*
+!glide/glide.ts
