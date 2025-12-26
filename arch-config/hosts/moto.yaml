@@ -33,6 +33,7 @@ packages:
   - xed # Text editor
   - galculator # Calculator
   - freeoffice # Office Suite
+  - obsidian
 
   # Fonts
   - ttf-jetbrains-mono-nerd
