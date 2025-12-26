@@ -58,7 +58,13 @@ return {
 		-- Default subdirectory for notes
 		-- notes_subdir = "notes",
 		-- new_notes_location = "notes_subdir",
-
+		daily_notes = {
+			folder = "notes/daily", -- relative to your vault root
+			date_format = "%Y-%m-%d", -- optional, how the date is formatted in filenames
+			alias_format = nil, -- optional alias format
+			default_tags = { "daily-notes" }, -- optional tags
+			template = nil, -- optional template file name
+		},
 		----------------------------------------------------------------
 		-- Filename / ID generation: slug format (foo-bar.md)
 		----------------------------------------------------------------
