@@ -9,6 +9,7 @@ return {
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		"nvim-treesitter/nvim-treesitter",
+		"yousefhadder/markdown-plus.nvim",
 	},
 	keys = {
 		-- Note Management
