@@ -15,6 +15,8 @@ keymap:
         launch: ["jumpapp", "-f", "nemo"]
       ALT_R-v:
         launch: ["jumpapp", "-f", "code"]
+      ALT_R-r:
+        launch: ["jumpapp", "-f", "xreader"]
   - name: Close App
     remap:
       ALT-q: ALT-F4
