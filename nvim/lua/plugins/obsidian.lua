@@ -63,7 +63,14 @@ return {
 			date_format = "%Y-%m-%d", -- optional, how the date is formatted in filenames
 			alias_format = nil, -- optional alias format
 			default_tags = { "daily-notes" }, -- optional tags
-			template = nil, -- optional template file name
+			template = "daily.md", -- optional template file name
+		},
+
+		-- template
+		templates = {
+			folder = "notes/template",
+			date_format = "%Y-%m-%d-%a",
+			time_format = "%H:%M",
 		},
 		----------------------------------------------------------------
 		-- Filename / ID generation: slug format (foo-bar.md)

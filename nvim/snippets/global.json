@@ -1,0 +1,9 @@
+{
+    "date_time_snippet": {
+        "prefix": "dtt",
+        "body": [
+            "${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE} | "
+        ],
+        "description": "Date time for notes"
+    }
+}
