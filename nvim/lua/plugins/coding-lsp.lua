@@ -17,7 +17,7 @@ local servers = {
 	dockerls = {},
 	html = {},
 	cssls = {},
-	marksman = {},
+	-- marksman = {},
 	clangd = {},
 	basedpyright = {},
 }
