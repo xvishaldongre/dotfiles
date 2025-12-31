@@ -1,5 +1,19 @@
--- lua/plugins/obsidian.lua
-local expand = vim.fn.expand
+-- helpers ---------------------------------------------------------
+local function ensure_dir(path)
+	path = vim.fn.expand(path)
+	if vim.fn.isdirectory(path) == 0 then
+		vim.fn.mkdir(path, "p")
+	end
+end
+
+-- ensure workspace + notes dirs -----------------------------------
+ensure_dir("~/shared")
+ensure_dir("~/shared/notes")
+ensure_dir("~/shared/notes/daily")
+
+-- optional template check -----------------------------------------
+local daily_template_path = vim.fn.expand("~/shared/templates/daily.md")
+local daily_template = vim.fn.filereadable(daily_template_path) == 1 and "daily.md" or nil
 
 return {
 	"obsidian-nvim/obsidian.nvim",
@@ -40,8 +54,6 @@ return {
 		{ mode = "n", "<leader>ox", ":ObsidianToggleCheckbox<CR>", desc = "Toggle checkbox" },
 	},
 	opts = {
-		-- Vault root
-		-- dir = expand("~/Documents/notes"),
 
 		-- Workspaces
 		workspaces = {
@@ -64,7 +76,7 @@ return {
 			date_format = "%Y-%m-%d", -- optional, how the date is formatted in filenames
 			alias_format = nil, -- optional alias format
 			default_tags = { "daily-notes" }, -- optional tags
-			template = "daily.md", -- optional template file name
+			template = daily_template, -- ignored if not present
 		},
 
 		-- template
