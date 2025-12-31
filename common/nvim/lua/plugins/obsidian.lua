@@ -99,13 +99,35 @@ return {
 			return tostring(os.time())
 		end,
 
-		-- 2. (Optional) If you want dots to automatically create folders
-		-- e.g. 'db.postgres' becomes 'db/postgres.md'
-		-- note_path_func = function(spec)
-		-- 	-- This replaces dots with slashes ONLY for the file system path
-		-- 	local path = spec.dir / spec.id:gsub("%.", "/")
-		-- 	return path:with_suffix(".md")
-		-- end,
+		-- 2. Logic to generate the "Title" from the filename
+		note_frontmatter_func = function(note)
+			-- Get the filename without the path/extension
+			local name = note.id
+
+			-- Extract string after the last dot (e.g., "fruit.awesome-apples" -> "awesome-apples")
+			local last_part = name:match("([^.]+)$") or name
+
+			local title = last_part
+			-- Check if it's NOT already capitalized (like Custom-Capitalization)
+			-- If it's all lowercase/hyphenated, transform it
+			if last_part:match("^%l") then
+				-- Replace hyphens with spaces and capitalize words
+				title = last_part:gsub("-", " "):gsub("(%a)([%w]*)", function(first, rest)
+					return first:upper() .. rest:lower()
+				end)
+			end
+
+			local out = { title = title, aliases = note.aliases, tags = note.tags }
+
+			-- Merge existing metadata if it exists
+			if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+				for k, v in pairs(note.metadata) do
+					out[k] = v
+				end
+			end
+
+			return out
+		end,
 
 		preferred_link_style = "markdown",
 
