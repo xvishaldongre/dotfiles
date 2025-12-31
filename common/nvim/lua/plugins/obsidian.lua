@@ -89,14 +89,14 @@ return {
 		-- Filename / ID generation: slug format (foo-bar.md)
 		----------------------------------------------------------------
 		note_id_func = function(title)
-			if title and #title > 0 then
-				return title:gsub("%s+", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
-			else
-				-- fallback to timestamp if no title given
-				return tostring(os.time())
+			if title ~= nil then
+				-- If you type 'db.postgres.replication', the filename will be 'db.postgres.replication.md'
+				-- We transform it to lowercase and replace spaces with hyphens, but keep dots.
+				return title:gsub(" ", "-"):lower()
 			end
+			-- Fallback: if no title is provided, use a timestamp
+			return tostring(os.time())
 		end,
-
 		----------------------------------------------------------------
 		-- Link formatting: use_alias_only
 		----------------------------------------------------------------
