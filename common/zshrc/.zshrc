@@ -1,7 +1,9 @@
 # Environment Variables
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_VERIFY_ATTESTATIONS=1
+export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 export EDITOR=nvim
 export VISUAL=nvim
 
@@ -27,11 +29,15 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$HOME/.cache/zsh/completion"
 
 # Source local aliases
-source ~/.config/aliases/aliases
-# source ~/.config/aliases/kubectl_aliases
-# source ~/.config/private_aliases.sh
-source ~/.config/aliases/git_worktree.sh
-# source ~/.config/zshrc/bindkey.sh
+for file in \
+  ~/.config/aliases/aliases \
+  ~/.config/aliases/kubectl_aliases \
+  ~/.config/aliases/git_worktree.sh
+
+  ~/.config/private_aliases.sh \
+do
+  [[ -f "$file" ]] && source "$file"
+done
 
 # Znap Plugins
 znap source zsh-users/zsh-completions        # Completion functions
