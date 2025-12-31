@@ -88,6 +88,7 @@ return {
 		----------------------------------------------------------------
 		-- Filename / ID generation: slug format (foo-bar.md)
 		----------------------------------------------------------------
+		-- 1. This tells the plugin: "Use the title I typed as the ID/Filename"
 		note_id_func = function(title)
 			if title ~= nil then
 				-- If you type 'db.postgres.replication', the filename will be 'db.postgres.replication.md'
@@ -97,20 +98,16 @@ return {
 			-- Fallback: if no title is provided, use a timestamp
 			return tostring(os.time())
 		end,
-		----------------------------------------------------------------
-		-- Link formatting: use_alias_only
-		----------------------------------------------------------------
-		-- Wiki links: [[Alias Only]]
-		wiki_link_func = function(opts)
-			return string.format("[[%s]]", opts.alias)
-		end,
 
-		-- Markdown links: [Alias Only]
-		markdown_link_func = function(opts)
-			return string.format("[%s]", opts.alias)
-		end,
+		-- 2. (Optional) If you want dots to automatically create folders
+		-- e.g. 'db.postgres' becomes 'db/postgres.md'
+		-- note_path_func = function(spec)
+		-- 	-- This replaces dots with slashes ONLY for the file system path
+		-- 	local path = spec.dir / spec.id:gsub("%.", "/")
+		-- 	return path:with_suffix(".md")
+		-- end,
 
-		preferred_link_style = "markdown", -- still defaults to markdown
+		preferred_link_style = "markdown",
 
 		----------------------------------------------------------------
 		-- Completion and picker settings
