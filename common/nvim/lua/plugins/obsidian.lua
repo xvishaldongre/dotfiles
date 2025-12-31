@@ -88,10 +88,13 @@ return {
 		----------------------------------------------------------------
 		-- Filename / ID generation: slug format (foo-bar.md)
 		----------------------------------------------------------------
-		note_path_func = function(spec)
-			-- spec.id is the slug created above
-			local path = spec.dir / spec.id
-			return path:with_suffix(".md")
+		note_id_func = function(title)
+			if title and #title > 0 then
+				return title:gsub("%s+", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
+			else
+				-- fallback to timestamp if no title given
+				return tostring(os.time())
+			end
 		end,
 
 		----------------------------------------------------------------
