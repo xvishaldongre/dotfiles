@@ -32,9 +32,8 @@ zstyle ':completion:*' cache-path "$HOME/.cache/zsh/completion"
 for file in \
   ~/.config/aliases/aliases \
   ~/.config/aliases/kubectl_aliases \
-  ~/.config/aliases/git_worktree.sh
-
-  ~/.config/private_aliases.sh \
+  ~/.config/aliases/git_worktree.sh \
+  ~/.config/private_aliases.sh 
 do
   [[ -f "$file" ]] && source "$file"
 done
