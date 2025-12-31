@@ -1,0 +1,12 @@
+rcmd - v : open -a "Visual Studio Code"
+rcmd - t : open -a "WezTerm"
+rcmd - b : osascript -e 'tell application "Zen" to activate'
+rcmd - s : osascript -e 'tell application "System Events" to tell process "Slack" to click menu item "Show Main Window" of menu "File" of menu bar 1'
+rcmd - l : open -a "OpenLens"
+rcmd - f : open -a "Finder"
+rcmd - e : open -a "HeyNote"
+rcmd - o : open -a "VSCodium"
+rcmd - n : open -a "Notion"
+rcmd - g : open -a "Google Chrome"
+rcmd - d : open -a "Ghostty"
+
