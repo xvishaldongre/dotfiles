@@ -38,7 +38,7 @@ packages:
   # Fonts
   - ttf-jetbrains-mono-nerd
   # Other
-  - xremap
+  - xremap-x11-bin
   - jumpapp
   - cloudflare-warp-bin
 
