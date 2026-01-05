@@ -12,8 +12,13 @@ ensure_dir("~/shared/notes")
 ensure_dir("~/shared/notes/daily")
 
 -- optional template check -----------------------------------------
-local daily_template_path = vim.fn.expand("~/shared/templates/daily.md")
-local daily_template = vim.fn.filereadable(daily_template_path) == 1 and "daily.md" or nil
+local function template_if_exists(name)
+	local path = vim.fn.expand("~/shared/notes/template/" .. name)
+	return vim.fn.filereadable(path) == 1 and name or nil
+end
+
+local daily_template = template_if_exists("daily.md")
+local new_note_template = template_if_exists("new-note.md")
 
 return {
 	"obsidian-nvim/obsidian.nvim",
@@ -84,6 +89,7 @@ return {
 			folder = "notes/template",
 			date_format = "%Y-%m-%d-%a",
 			time_format = "%H:%M",
+			default = new_note_template,
 		},
 		----------------------------------------------------------------
 		-- Filename / ID generation: slug format (foo-bar.md)
@@ -151,6 +157,6 @@ return {
 				insert_tag = "<C-l>",
 			},
 		},
-		ui = { enable = true },
+		ui = { enable = false },
 	},
 }
