@@ -9,4 +9,4 @@ rcmd - o : open -a "VSCodium"
 rcmd - n : open -a "Notion"
 rcmd - g : open -a "Google Chrome"
 rcmd - d : open -a "Ghostty"
-
+rcmd - r : open -a "Books"
