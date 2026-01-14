@@ -1,6 +1,7 @@
 # Environment Variables
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_VERIFY_ATTESTATIONS=1
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
