@@ -151,4 +151,24 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 vim.api.nvim_create_user_command("ExpenseSummary", function()
 	require("config.expense_formatter").show_summary()
-end, { desc = "Show expense summary by category" })
+end, { desc = "Show expense summary by category for current month" })
+
+vim.api.nvim_create_user_command("YearlyExpenseSummary", function()
+	require("config.expense_formatter").show_yearly_summary()
+end, { desc = "Show yearly expense summary" })
+
+vim.api.nvim_create_user_command("GenerateMonthlyReport", function()
+	require("config.expense_formatter").generate_monthly_markdown_report()
+end, { desc = "Generate a monthly overview markdown report" })
+
+-- Section: Zen Writing Mode for Notes
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = "*/shared/notes/*.md",
+	callback = function()
+		vim.opt_local.conceallevel = 2
+		vim.opt_local.wrap = true
+		vim.opt_local.linebreak = true
+		vim.opt_local.spell = true
+		-- Auto-save is already enabled globally via auto-save.nvim but we can ensure it's on
+	end,
+})
