@@ -45,7 +45,7 @@ return {
 			hl.BlinkCmpMenuSelection = { bg = c.bg_highlight, fg = c.fg_bold }
 
 			-- Optional: ghost text
-			hl.BlinkCmpGhostText = { fg = c.comment, gui = "italic" }
+			hl.BlinkCmpGhostText = { fg = c.comment, italic = true }
 
 			hl.Changed = { fg = c.delta }
 			hl.Directory = { fg = c.keyword }
@@ -56,13 +56,13 @@ return {
 			hl.WinSeparator = { fg = c.line }
 
 			hl.LeapBackdrop = { fg = c.comment }
-			hl.LeapLabel = { fg = c.delta, gui = "bold" }
+			hl.LeapLabel = { fg = c.delta, bold = true }
 
 			hl.MiniClueDescGroup = { fg = c.keyword }
-			hl.MiniClueNextKey = { fg = c.parameter, gui = "bold" }
-			hl.MiniClueNextKeyWithPostkeys = { fg = c.func, gui = "bold" }
+			hl.MiniClueNextKey = { fg = c.parameter, bold = true }
+			hl.MiniClueNextKeyWithPostkeys = { fg = c.func, bold = true }
 
-			hl.MiniFilesTitleFocused = { fg = c.constant, gui = "bold" }
+			hl.MiniFilesTitleFocused = { fg = c.constant, bold = true }
 
 			hl.MiniHipatternsFixmeBody = { fg = c.error }
 			hl.MiniHipatternsHackBody = { fg = c.warning }
@@ -72,33 +72,33 @@ return {
 			hl.MiniHipatternsHack = { fg = c.bg, bg = c.warning }
 			hl.MiniHipatternsNote = { fg = c.bg, bg = c.plus }
 			hl.MiniHipatternsTodo = { fg = c.bg, bg = c.hint }
-			hl.MiniHipatternsFixmeColon = { bg = c.error, fg = c.error, gui = "bold" }
-			hl.MiniHipatternsHackColon = { bg = c.warning, fg = c.warning, gui = "bold" }
-			hl.MiniHipatternsNoteColon = { bg = c.plus, fg = c.plus, gui = "bold" }
-			hl.MiniHipatternsTodoColon = { bg = c.hint, fg = c.hint, gui = "bold" }
+			hl.MiniHipatternsFixmeColon = { bg = c.error, fg = c.error, bold = true }
+			hl.MiniHipatternsHackColon = { bg = c.warning, fg = c.warning, bold = true }
+			hl.MiniHipatternsNoteColon = { bg = c.plus, fg = c.plus, bold = true }
+			hl.MiniHipatternsTodoColon = { bg = c.hint, fg = c.hint, bold = true }
 
 			hl.MiniIndentscopeSymbol = { fg = c.comment }
 
-			hl.MiniJump = { sp = c.delta, gui = "undercurl" }
+			hl.MiniJump = { sp = c.delta, undercurl = true }
 
 			hl.MiniMapNormal = { fg = c.comment, bg = c.line }
 
-			hl.MiniPickHeader = { fg = c.keyword, gui = "bold" }
+			hl.MiniPickHeader = { fg = c.keyword, bold = true }
 			hl.MiniPickMatchCurrent = { fg = c.constant, bg = c.line }
-			hl.MiniPickMatchRanges = { fg = c.delta, gui = "bold" }
+			hl.MiniPickMatchRanges = { fg = c.delta, bold = true }
 			hl.MiniPickPrompt = { fg = c.constant }
 
 			hl.MiniStarterInactive = { fg = c.comment }
 			hl.MiniStarterItemPrefix = { fg = c.string }
-			hl.MiniStarterQuery = { fg = c.delta, gui = "bold" }
-			hl.MiniStarterHeader = { fg = c.keyword, gui = "bold" }
-			hl.MiniStarterSection = { fg = c.func, gui = "bold" }
+			hl.MiniStarterQuery = { fg = c.delta, bold = true }
+			hl.MiniStarterHeader = { fg = c.keyword, bold = true }
+			hl.MiniStarterSection = { fg = c.func, bold = true }
 
 			hl.MiniStatuslineDevinfo = { fg = c.fg, bg = c.search }
 			hl.MiniStatuslineDirectory = { fg = c.operator, bg = c.line }
 			hl.MiniStatuslineFileinfo = { fg = c.fg, bg = c.search }
-			hl.MiniStatuslineFilename = { fg = c.operator, bg = c.line, gui = "bold" }
-			hl.MiniStatuslineFilenameModified = { fg = c.delta, bg = c.line, gui = "bold" }
+			hl.MiniStatuslineFilename = { fg = c.operator, bg = c.line, bold = true }
+			hl.MiniStatuslineFilenameModified = { fg = c.delta, bg = c.line, bold = true }
 			hl.MiniStatuslineInactive = { fg = c.comment, bg = c.line }
 			hl.MiniStatuslineModeCommand = { fg = c.bg, bg = c.string }
 			hl.MiniStatuslineModeInsert = { fg = c.bg, bg = c.plus }
@@ -107,36 +107,36 @@ return {
 			hl.MiniStatuslineModeReplace = { fg = c.bg, bg = c.func }
 			hl.MiniStatuslineModeVisual = { fg = c.bg, bg = c.parameter }
 
-			hl.MiniTablineCurrent = { fg = c.constant, bg = c.line, sp = c.line, gui = "bold,underline" }
-			hl.MiniTablineFill = { bg = c.bg, sp = c.line, gui = "underline" }
-			hl.MiniTablineHidden = { fg = c.comment, bg = c.line, sp = c.line, gui = "underline" }
-			hl.MiniTablineVisible = { fg = c.operator, bg = c.line, sp = c.line, gui = "underline" }
-			hl.MiniTablineModifiedCurrent = { fg = c.bg, bg = c.constant, sp = c.line, gui = "bold,underline" }
-			hl.MiniTablineModifiedHidden = { fg = c.line, bg = c.comment, sp = c.line, gui = "underline" }
-			hl.MiniTablineModifiedVisible = { fg = c.bg, bg = c.operator, sp = c.line, gui = "underline" }
-			hl.MiniTablineTabpagesection = { fg = c.fg, bg = c.search, sp = c.line, gui = "underline" }
+			hl.MiniTablineCurrent = { fg = c.constant, bg = c.line, sp = c.line, bold = true, underline = true }
+			hl.MiniTablineFill = { bg = c.bg, sp = c.line, underline = true }
+			hl.MiniTablineHidden = { fg = c.comment, bg = c.line, sp = c.line, underline = true }
+			hl.MiniTablineVisible = { fg = c.operator, bg = c.line, sp = c.line, underline = true }
+			hl.MiniTablineModifiedCurrent = { fg = c.bg, bg = c.constant, sp = c.line, bold = true, underline = true }
+			hl.MiniTablineModifiedHidden = { fg = c.line, bg = c.comment, sp = c.line, underline = true }
+			hl.MiniTablineModifiedVisible = { fg = c.bg, bg = c.operator, sp = c.line, underline = true }
+			hl.MiniTablineTabpagesection = { fg = c.fg, bg = c.search, sp = c.line, underline = true }
 
 			hl.RenderMarkdownBullet = { fg = c.plus }
 			hl.RenderMarkdownTableRow = { fg = c.keyword }
 			hl.RenderMarkdownCode = { bg = c.line }
 
-			hl.TreesitterContext = { bg = None }
-			-- hl.TreesitterContextBottom = { sp = c.comment, gui = "underdotted" }
-			hl.TreesitterContextBottom = { sp = c.line, gui = "underdotted" }
-			hl.TreesitterContextLineNumber = { fg = c.comment, bg = None }
+			hl.TreesitterContext = { bg = "NONE" }
+			-- hl.TreesitterContextBottom = { sp = c.comment, underdotted = true }
+			hl.TreesitterContextBottom = { sp = c.line, underdotted = true }
+			hl.TreesitterContextLineNumber = { fg = c.comment, bg = "NONE" }
 
 			-- WinBars
 			hl.WinBar = { fg = "NONE", bg = "NONE", bold = false }
 			hl.WinBarNC = { fg = "NONE", bg = "NONE", bold = false }
 
-			hl["@markup.strong"] = { fg = c.keyword, gui = "bold" }
-			hl["@markup.italic"] = { fg = c.keyword, gui = "italic" }
-			hl["@markup.heading.1"] = { fg = c.constant, gui = "bold" }
-			hl["@markup.heading.2"] = { fg = c.parameter, gui = "bold" }
-			hl["@markup.heading.3"] = { fg = c.type, gui = "bold" }
-			hl["@markup.heading.4"] = { fg = c.operator, gui = "bold" }
-			hl["@markup.heading.5"] = { fg = c.plus, gui = "bold" }
-			hl["@markup.heading.6"] = { fg = c.func, gui = "bold" }
+			hl["@markup.strong"] = { fg = c.keyword, bold = true }
+			hl["@markup.italic"] = { fg = c.keyword, italic = true }
+			hl["@markup.heading.1"] = { fg = c.constant, bold = true }
+			hl["@markup.heading.2"] = { fg = c.parameter, bold = true }
+			hl["@markup.heading.3"] = { fg = c.type, bold = true }
+			hl["@markup.heading.4"] = { fg = c.operator, bold = true }
+			hl["@markup.heading.5"] = { fg = c.plus, bold = true }
+			hl["@markup.heading.6"] = { fg = c.func, bold = true }
 
 			-- Compute a nice background color for markup headings based on the
 			-- foreground color of each level. Use mini.colors to adjust the colors.

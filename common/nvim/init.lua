@@ -140,3 +140,15 @@ vim.api.nvim_create_user_command("ListWins", function()
 		print(string.format("win=%d buf=%d ft=%s relative=%s", win, buf, ft, tostring(cfg.relative)))
 	end
 end, { desc = "List all windows with config info" })
+
+-- Section: Daily Notes Expense Formatter
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*/shared/notes/daily/*.md",
+	callback = function()
+		require("config.expense_formatter").format_expenses()
+	end,
+})
+
+vim.api.nvim_create_user_command("ExpenseSummary", function()
+	require("config.expense_formatter").show_summary()
+end, { desc = "Show expense summary by category" })
