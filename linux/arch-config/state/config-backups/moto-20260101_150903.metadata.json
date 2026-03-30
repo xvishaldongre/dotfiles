@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-01-01T15:09:03.778515367+00:00",
+  "timestamp_display": "2026-01-01 15:09",
+  "hostname": "moto",
+  "active_host_file": "moto.yaml",
+  "enabled_modules": [],
+  "backup_type": "auto-sync",
+  "dcli_version": "0.1.0",
+  "package_count": 37,
+  "validation_passed": true
+}

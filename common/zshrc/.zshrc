@@ -7,6 +7,8 @@ export HOMEBREW_NO_VERIFY_ATTESTATIONS=1
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 export EDITOR=nvim
 export VISUAL=nvim
+export PATH="$HOME/.local/bin:$PATH"
+
 
 # Bash style comments
 setopt interactivecomments
@@ -63,3 +65,6 @@ znap eval mise 'mise activate zsh'
 # Prompt optimization
 znap prompt
 
+
+# opencode
+export PATH=/home/xvishaldongre/.opencode/bin:$PATH

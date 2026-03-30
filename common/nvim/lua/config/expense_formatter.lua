@@ -500,6 +500,56 @@ function M.generate_monthly_markdown_report()
 	vim.api.nvim_buf_set_option(bufnr, "bufhidden", "wipe")
 	vim.api.nvim_buf_set_name(bufnr, "Monthly_Overview_" .. os.date("%Y%m%d"))
 
+	-- Apply highlights
+	local ns_id = vim.api.nvim_create_namespace("expense_highlights")
+	for idx, line in ipairs(lines) do
+		local line_idx = idx - 1 -- 0-indexed for API
+
+		-- Highlight Arrows (Trends)
+		local up_start, up_end = line:find("↑")
+		if up_start then
+			local bracket_start = line:find("%(", 1)
+			local bracket_end = line:find("%)", up_end)
+			if bracket_start and bracket_end then
+				vim.api.nvim_buf_add_highlight(bufnr, ns_id, "DiagnosticError", line_idx, bracket_start - 1, bracket_end)
+			end
+		end
+
+		local down_start, down_end = line:find("↓")
+		if down_start then
+			local bracket_start = line:find("%(", 1)
+			local bracket_end = line:find("%)", down_end)
+			if bracket_start and bracket_end then
+				vim.api.nvim_buf_add_highlight(bufnr, ns_id, "DiagnosticOk", line_idx, bracket_start - 1, bracket_end)
+			end
+		end
+
+		-- Highlight Category Tags (#tag)
+		local tag_start = 1
+		while true do
+			local s, e = line:find("#[%w%-_]+", tag_start)
+			if not s then
+				break
+			end
+			vim.api.nvim_buf_add_highlight(bufnr, ns_id, "Special", line_idx, s - 1, e)
+			tag_start = e + 1
+		end
+
+		-- Highlight Amount in lists
+		if line:match("^%- %d+") then
+			local dash_end = line:find("-", 1)
+			local pipe_start = line:find("|", 1)
+			if dash_end and pipe_start then
+				vim.api.nvim_buf_add_highlight(bufnr, ns_id, "Constant", line_idx, dash_end + 1, pipe_start - 1)
+			end
+		end
+
+		-- Highlight Headers
+		if line:match("^#+") then
+			vim.api.nvim_buf_add_highlight(bufnr, ns_id, "Title", line_idx, 0, -1)
+		end
+	end
+
 	-- Open in a split
 	vim.cmd("vsplit")
 	vim.api.nvim_set_current_buf(bufnr)

@@ -1,4 +1,13 @@
 [tools]
+bun = "latest"
+gemini-cli = "latest"
 go = "latest"
+helm = "latest"
+kubecolor = "latest"
 kubectl = "latest"
+kubectx = "latest"
 node = "latest"
+opencode = "latest"
+task = "latest"
+tinytex = "latest"
+websocat = "latest"

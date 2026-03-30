@@ -42,6 +42,5 @@ return {
 
 		-- You may want these if you stick with the opinionated "<C-a>" and "<C-x>" above — otherwise consider "<leader>o".
 		vim.keymap.set("n", "+", "<C-a>", { desc = "Increment", noremap = true })
-		vim.keymap.set("n", "-", "<C-x>", { desc = "Decrement", noremap = true })
 	end,
 }

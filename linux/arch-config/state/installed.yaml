@@ -1,0 +1,145 @@
+# Auto-generated state file - tracks dcli-managed packages
+# Generated: 2026-01-05T09:03:15.957223242+00:00
+
+packages:
+  - name: nemo-fileroller
+    version: "6.6.0-3"
+    type: pacman
+  - name: atuin
+    version: "18.10.0-1.1"
+    type: pacman
+  - name: glide-browser-bin
+    version: "0.1.57a-1"
+    type: pacman
+  - name: transmission-gtk
+    version: "4.0.6-10"
+    type: pacman
+  - name: paru
+    version: "2.1.0-2"
+    type: pacman
+  - name: wezterm-git
+    version: "20240203.110809.r790.gd3b0fda-1"
+    type: pacman
+  - name: fzf
+    version: "0.67.0-2.1"
+    type: pacman
+  - name: docker
+    version: "1:29.1.3-1.1"
+    type: pacman
+  - name: mise
+    version: "2025.11.3-1.1"
+    type: pacman
+  - name: libvirt
+    version: "1:11.10.0-1.1"
+    type: pacman
+  - name: qemu-full
+    version: "10.1.2-3"
+    type: pacman
+  - name: visual-studio-code-bin
+    version: "1.107.1-1"
+    type: pacman
+  - name: mint-themes
+    version: "2.3.6-1"
+    type: pacman
+  - name: xreader
+    version: "4.6.1-1.1"
+    type: pacman
+  - name: cachyos-gaming-meta
+    version: "1:1.0.0-5"
+    type: pacman
+  - name: virt-manager
+    version: "5.1.0-1"
+    type: pacman
+  - name: lightdm-slick-greeter
+    version: "2.2.5-1.1"
+    type: pacman
+  - name: zoxide
+    version: "0.9.8-2.1"
+    type: pacman
+  - name: pix
+    version: "3.4.9-1"
+    type: pacman
+  - name: dnsmasq
+    version: "2.91-1.1"
+    type: pacman
+  - name: stow
+    version: "2.4.1-1"
+    type: pacman
+  - name: cloudflare-warp-bin
+    version: "2025.9.558-1"
+    type: pacman
+  - name: neovim
+    version: "0.11.5-1.1"
+    type: pacman
+  - name: mint-y-icons
+    version: "1.9.1-1"
+    type: pacman
+  - name: ttf-jetbrains-mono-nerd
+    version: "3.4.0-1"
+    type: pacman
+  - name: cachyos-gaming-applications
+    version: "1.0.0-2"
+    type: pacman
+  - name: starship
+    version: "1.24.2-1"
+    type: pacman
+  - name: xed
+    version: "3.8.7-1.1"
+    type: pacman
+  - name: pika-backup
+    version: "0.7.5-1.1"
+    type: pacman
+  - name: github-cli
+    version: "2.83.2-1.1"
+    type: pacman
+  - name: galculator
+    version: "2.1.4-10.1"
+    type: pacman
+  - name: cinnamon
+    version: "6.6.3-5.1"
+    type: pacman
+  - name: vlc
+    version: "3.0.21-32.1"
+    type: pacman
+  - name: lima-bin
+    version: "2.0.2-1"
+    type: pacman
+  - name: git
+    version: "2.52.0-2.1"
+    type: pacman
+  - name: obsidian
+    version: "1.10.6-1"
+    type: pacman
+  - name: dmidecode
+    version: "3.7-1"
+    type: pacman
+  - name: jumpapp
+    version: "1.2-1.1"
+    type: pacman
+  - name: bibata-cursor-theme
+    version: "2.0.7-1.1"
+    type: pacman
+  - name: lightdm-settings
+    version: "2.0.9-1"
+    type: pacman
+  - name: gnome-screenshot
+    version: "1:41.0-1.1"
+    type: pacman
+  - name: nemo-python
+    version: "6.6.0-3"
+    type: pacman
+  - name: vlc-plugins-all
+    version: "3.0.21-32.1"
+    type: pacman
+  - name: tmux
+    version: "3.6_a-1.1"
+    type: pacman
+  - name: xremap-x11-bin
+    version: "0.14.8-1"
+    type: pacman
+  - name: freeoffice
+    version: "1228-1"
+    type: pacman
+  - name: lightdm
+    version: "1:1.32.0-6.1"
+    type: pacman

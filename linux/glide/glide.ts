@@ -31,4 +31,5 @@ glide.keymaps.set(
 glide.prefs.set("browser.uidensity", 1); // compact mode
 glide.addons.install("https://addons.mozilla.org/firefox/downloads/file/4629131/ublock_origin-1.68.0.xpi")
 glide.addons.install("https://addons.mozilla.org/firefox/downloads/file/4640726/bitwarden_password_manager-2025.12.0.xpi")
+glide.addons.install("https://addons.mozilla.org/firefox/downloads/file/4570192/raindropio-6.6.91.xpi")
 

@@ -21,6 +21,7 @@ packages:
   - mise
   - docker
   - lima-bin
+  - github-cli
 
   # GUI Apps
   - wezterm-git
@@ -33,14 +34,26 @@ packages:
   - xed # Text editor
   - galculator # Calculator
   - freeoffice # Office Suite
-  - obsidian
+  - obsidian # Note taking
+  - transmission-gtk # Torrent Client
+  - pika-backup # Backup solution
+
+  # Virtualization
+  - virt-manager
+  - libvirt
+  - qemu-full
+  - dnsmasq
+  - dmidecode
 
   # Fonts
   - ttf-jetbrains-mono-nerd
+
   # Other
   - xremap-x11-bin
   - jumpapp
   - cloudflare-warp-bin
+  - cachyos-gaming-meta
+  - cachyos-gaming-applications
 
   # Cinnamon DE
   - cinnamon
@@ -50,6 +63,9 @@ packages:
   - lightdm
   - lightdm-slick-greeter
   - lightdm-settings
+  - gnome-screenshot
+  - nemo-fileroller
+  - nemo-python
 
 # Exclude packages from base or modules
 exclude: []
