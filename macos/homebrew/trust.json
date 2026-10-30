@@ -1,0 +1,15 @@
+{
+  "trustedcasks": [
+    "caezium/tap/burrow",
+    "vishvavariya/notchy/notchy"
+  ],
+  "trustedtaps": [
+    "abue-ammar/tinycast",
+    "bcollard/marina",
+    "jackielii/tap",
+    "thsnkhn/harbor"
+  ],
+  "trustedformulae": [
+    "loft-sh/tap/vcluster"
+  ]
+}
