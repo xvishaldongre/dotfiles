@@ -10,3 +10,6 @@ gh/hosts.yml
 # glide browser
 glide/*
 !glide/glide.ts
+
+# homebrew trust lock
+macos/homebrew/trust.json.lock
