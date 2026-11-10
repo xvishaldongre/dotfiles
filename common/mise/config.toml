@@ -1,13 +1,18 @@
 [tools]
+awscli = { version = "latest", symlink_bins = "true" }
 bun = "latest"
 gemini-cli = "latest"
+"github:can1357/oh-my-pi" = "latest"
 go = "latest"
 helm = "latest"
+kafkactl = "latest"
 kubecolor = "latest"
 kubectl = "latest"
 kubectx = "latest"
 node = "latest"
 opencode = "latest"
+postgres = "latest"
+redis = "latest"
 task = "latest"
 tinytex = "latest"
 websocat = "latest"
