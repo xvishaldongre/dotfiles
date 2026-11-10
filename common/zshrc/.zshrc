@@ -4,13 +4,13 @@
 #  Symlinked to ~/.zshrc by stow (dotfiles/common/zshrc). Edit this file only.
 #
 #  DESIGN RULE
-#  Every optional thing is guarded. A machine without brew, git, znap,
-#  starship, zoxide, atuin, fzf or kubecolor still gets a working shell.
+#  Every optional thing is guarded. A machine without brew, git, starship,
+#  zoxide, atuin, fzf or kubecolor still gets a working shell.
 #  Missing tools are reported once per shell (see _need) so nothing fails
 #  silently. Set ZSH_QUIET=1 to suppress the summary.
 #
 #  ORDERING RULES — break these and things fail silently:
-#    1. zstyle ':completion:*' must run BEFORE znap (it defers compinit).
+#    1. zstyle ':completion:*' must run BEFORE compinit (it reads the cache).
 #    2. fast-syntax-highlighting must be last, or it highlights wrongly.
 #
 #  Aliases live in ~/.aliases (sourced at the bottom).
@@ -34,6 +34,13 @@ fi
 # User bins. -d test so a missing dir cannot shadow a real command.
 [[ -d $HOME/.local/bin ]]              && path=($HOME/.local/bin $path)
 [[ -d $HOME/.krew/bin ]]               && path=($HOME/.krew/bin $path)
+
+# mise shims, not `mise activate zsh`. Activate installs a hook-env subprocess
+# on every prompt and every cd (~200 ms/shell). Shims resolve the version per
+# directory with no hook. Trade-off: `mise shell` and per-dir env vars
+# (JAVA_HOME, ...) do not apply mid-session. Switch to
+#   eval "$(mise activate zsh)"
+# if you need those.
 [[ -d $HOME/.local/share/mise/shims ]] && path=($HOME/.local/share/mise/shims $path)
 
 export EDITOR=nvim
@@ -100,54 +107,54 @@ zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
 # ----------------------------------------------------------------------------
-# 5. Plugins (znap) — optional, never fatal
+# 5. Plugins — plain sourcing, no plugin manager
 # ----------------------------------------------------------------------------
-# znap clones on first use. Guard on git and silence stderr so an offline
-# machine does not print git noise at every startup.
-_zsh_plugins_ok=0
-if (( $+commands[git] )); then
-  [[ -r ~/Repos/znap/znap.zsh ]] || \
-    git clone --depth 1 --quiet \
-        https://github.com/marlonrichert/zsh-snap.git ~/Repos/znap 2>/dev/null
-  if [[ -r ~/Repos/znap/znap.zsh ]]; then
-    source ~/Repos/znap/znap.zsh
-    _zsh_plugins_ok=1
-  else
-    _zsh_missing+=("znap (clone failed, no network?)")
-  fi
-else
-  _zsh_missing+=("git (needed for znap plugins)")
-fi
+# No znap: it cloned during startup and needed guards to stay quiet. Plain
+# sourcing is faster (0.03 s vs 0.05 s) and has no moving parts.
+#
+# Plugins live in ~/Repos/<owner>/<repo>. setup.sh clones them when missing.
+# $ZSH_PLUGIN_DIR overrides the location.
+: ${ZSH_PLUGIN_DIR:=$HOME/Repos}
 
-# _plugin: no-op when znap is missing; silent when a clone fails.
-_plugin() {
-  (( _zsh_plugins_ok )) || return 0
-  znap source "$@" 2>/dev/null
+# _plug <owner/repo> <entry file>: source the plugin if present, else record it
+# in the missing list so the summary at the end says so.
+_plugin_missing=0
+_plug() {
+  local f="$ZSH_PLUGIN_DIR/$1/$2"
+  if [[ -r $f ]]; then
+    source $f
+  else
+    _zsh_missing+=("$1 (plugin missing)")
+    _plugin_missing=1
+  fi
 }
 
-# zsh-completions is fpath-only: a free direct prepend beats znap source.
-if [[ -d ~/Repos/zsh-users/zsh-completions/src ]]; then
-  fpath=(~/Repos/zsh-users/zsh-completions/src $fpath)
-else
-  _plugin zsh-users/zsh-completions
-fi
+# zsh-completions is fpath-only: no code to source, just add its compdef dir.
+[[ -d $ZSH_PLUGIN_DIR/zsh-users/zsh-completions/src ]] \
+  && fpath=($ZSH_PLUGIN_DIR/zsh-users/zsh-completions/src $fpath)
 
-(( $+commands[fzf] )) && _plugin Aloxaf/fzf-tab || _need fzf
+# compinit must run before anything that registers completion widgets.
+# -C skips the security check on a cache we build ourselves; -d keeps the dump.
+autoload -Uz compinit && compinit -C -d $XDG_CACHE_HOME/zsh/compdump 2>/dev/null
+
+# fzf-tab needs the fzf binary; without it the plugin is dead weight.
+if (( $+commands[fzf] )); then
+  _plug Aloxaf/fzf-tab fzf-tab.plugin.zsh
+else
+  _need fzf
+fi
 
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-_plugin zsh-users/zsh-autosuggestions
+_plug zsh-users/zsh-autosuggestions zsh-autosuggestions.zsh
 
-# MUST be last of the plugin block (rule 2).
-_plugin zdharma-continuum/fast-syntax-highlighting
-# If znap never loaded, no compinit ran. Do it ourselves so completion works.
-if (( ! _zsh_plugins_ok )); then
-  autoload -Uz compinit && compinit -C -d $XDG_CACHE_HOME/zsh/compdump 2>/dev/null
-fi
+# MUST be last of the plugin block (rule 2): it wraps ZLE widgets, so every
+# plugin loaded later would wrap the wrapper.
+_plug zdharma-continuum/fast-syntax-highlighting fast-syntax-highlighting.plugin.zsh
 
 # ----------------------------------------------------------------------------
-# 6. Tool init — each no-ops silently when the tool is absent
+# 6. Tool init — skips silently when the tool is absent
 # ----------------------------------------------------------------------------
 # Do NOT use `znap eval` here: it writes an empty cache file when a command is
 # missing, returns 0, and every later shell replays that emptiness silently.
@@ -168,29 +175,44 @@ _tool() {
   source $file 2>/dev/null
 }
 
-_need starship || true
-_need zoxide   || true
-_need atuin    || true
-_need kubecolor || true
+# _tool already skips a missing command, so it is the only place that needs to
+# know. Record absence here rather than with separate _need calls.
+_tool_or_need() {
+  _need "$1" || return 0
+  _tool "$1" "$2"
+}
 
-_tool starship 'starship init zsh --print-full-init'
-_tool zoxide   'zoxide init zsh'
-_tool atuin    'atuin init zsh --disable-up-arrow'
+_tool_or_need starship 'starship init zsh --print-full-init'
+_tool_or_need zoxide   'zoxide init zsh'
+_tool_or_need atuin    'atuin init zsh --disable-up-arrow'
+
+# kubecolor is used by ~/.aliases, not here, but report it from one place.
+_need kubecolor || true
 
 # ----------------------------------------------------------------------------
 # 7. fzf
 # ----------------------------------------------------------------------------
-if [[ -r /opt/homebrew/opt/fzf/shell/completion.zsh ]]; then
-  source /opt/homebrew/opt/fzf/shell/completion.zsh
-  source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
-elif (( $+commands[fzf] )); then
-  # Non-brew install: use fzf's own shell integration if it shipped one.
-  for _f in /usr/share/fzf/{completion,key-bindings}.zsh \
-            /usr/share/doc/fzf/examples/{completion,key-bindings}.zsh; do
-    [[ -r $_f ]] && source $_f
-  done
-  unset _f
+# Ask fzf where its shell files are instead of hardcoding /opt/homebrew, which
+# is wrong on Intel macs (/usr/local) and on Linux. `fzf --zsh` is the modern
+# one-shot integration; fall back to package paths for older builds.
+if (( $+commands[fzf] )); then
+  if fzf --zsh >/dev/null 2>&1; then
+    source <(fzf --zsh)
+  else
+    for _f in \
+      "${HOMEBREW_PREFIX:-/opt/homebrew}"/opt/fzf/shell/completion.zsh \
+      "${HOMEBREW_PREFIX:-/opt/homebrew}"/opt/fzf/shell/key-bindings.zsh \
+      /usr/share/fzf/completion.zsh \
+      /usr/share/fzf/key-bindings.zsh \
+      /usr/share/doc/fzf/examples/completion.zsh \
+      /usr/share/doc/fzf/examples/key-bindings.zsh
+    do
+      [[ -r $_f ]] && source $_f
+    done
+    unset _f
+  fi
 fi
+
 # fd makes fzf instant on large trees; only set these when fd exists.
 if (( $+commands[fd] )); then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'

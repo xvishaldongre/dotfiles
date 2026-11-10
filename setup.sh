@@ -126,7 +126,38 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# 3. OS-specific packages
+# 3. zsh plugins
+# ---------------------------------------------------------------------------
+# .zshrc sources these directly; it no longer uses a plugin manager, so
+# nothing clones them at startup. Clone any that are missing, once.
+# Set SKIP_PLUGINS=1 to skip (offline machine).
+PLUGIN_DIR=${ZSH_PLUGIN_DIR:-$HOME/Repos}
+PLUGINS=(
+  zsh-users/zsh-completions
+  zsh-users/zsh-autosuggestions
+  Aloxaf/fzf-tab
+  zdharma-continuum/fast-syntax-highlighting
+)
+
+if [[ -n ${SKIP_PLUGINS:-} ]]; then
+  echo "skipping zsh plugins (SKIP_PLUGINS=1)"
+elif ! command -v git >/dev/null 2>&1; then
+  echo "note: git not found; skipping zsh plugins"
+else
+  for repo in "${PLUGINS[@]}"; do
+    dest=$PLUGIN_DIR/$repo
+    if [[ -d $dest ]]; then
+      continue
+    fi
+    echo "  cloning $repo"
+    if ! git clone --depth 1 --quiet "https://github.com/$repo.git" "$dest" 2>/dev/null; then
+      echo "  warning: could not clone $repo; .zshrc will report it" >&2
+    fi
+  done
+fi
+
+# ---------------------------------------------------------------------------
+# 4. OS-specific packages
 # ---------------------------------------------------------------------------
 case "$OS_TYPE" in
   Darwin) os_dir=macos ;;
