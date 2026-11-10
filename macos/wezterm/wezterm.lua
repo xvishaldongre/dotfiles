@@ -18,9 +18,13 @@ local palette = {
 -- The padded area is still part of tab 1, so clicking it activates tab 1.
 local center_tabs = true
 
--- Close the current tab, but never the last tab (that would close the window
--- and quit WezTerm).
+-- Cmd+W: close the current pane first, then the current tab, and never the
+-- last tab (that would close the window and quit WezTerm).
 local function close_tab(window, pane)
+	if #window:active_tab():panes() > 1 then
+		window:perform_action(act.CloseCurrentPane({ confirm = true }), pane)
+		return
+	end
 	local tabs = window:mux_window():tabs()
 	if #tabs > 1 then
 		window:perform_action(act.CloseCurrentTab({ confirm = true }), pane)
