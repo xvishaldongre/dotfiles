@@ -16,3 +16,6 @@ redis = "latest"
 task = "latest"
 tinytex = "latest"
 websocat = "latest"
+
+[settings]
+not_found_auto_install = false
