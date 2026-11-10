@@ -1,0 +1,47 @@
+# ============================================================================
+#  .aliases — sourced from ~/.zshrc
+# ============================================================================
+#  Symlinked to ~/.aliases by stow. Add personal aliases here.
+#  Machine-specific aliases belong in ~/.zshrc.local instead.
+# ============================================================================
+
+alias c='code'
+alias e='exit'
+alias g='grep --color -iE'
+alias t='tmux'
+alias v='XDG_CACHE_HOME=/tmp nvim'
+alias vim='XDG_CACHE_HOME=/tmp nvim'
+alias ww='cd ~/ww'
+
+# ----------------------------------------------------------------------------
+# kubectl aliases (ahmetb) — downloaded once, then lazy-loaded
+# ----------------------------------------------------------------------------
+# The upstream file is ~780 lines / 766 aliases. Loading it eagerly costs
+# seconds, so `k` loads it on first use and re-dispatches through eval.
+[[ -s ~/.kube/aliases.sh ]] || {
+  mkdir -p ~/.kube
+  curl -fsSL -o ~/.kube/aliases.sh \
+    https://raw.githubusercontent.com/ahmetb/kubectl-aliases/master/.kubectl_aliases 2>/dev/null
+}
+
+# kubecolor as the real kubectl, only when installed. The ahmetb file defines
+# `alias k='kubectl'`, so covering the `kubectl` command colours every alias.
+if (( $+commands[kubecolor] )); then
+  kubectl() { command kubecolor "$@" }
+fi
+
+# ${(@q)@} keeps each argument a separate, quoted word. A plain "$@" inside
+# the eval string would join them into one argument ("get nodes -A").
+_k() {
+  if [[ -z $_KUBE_LOADED && -s ~/.kube/aliases.sh ]]; then
+    _KUBE_LOADED=1
+    source ~/.kube/aliases.sh
+  fi
+  eval "k \${(@q)@}"
+}
+alias k='_k'
+
+# ----------------------------------------------------------------------------
+# Private aliases — only when the file exists
+# ----------------------------------------------------------------------------
+[[ -r ~/.config/private_aliases.sh ]] && source ~/.config/private_aliases.sh

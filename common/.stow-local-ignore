@@ -1,0 +1,5 @@
+# Stow ignore list for the `common` package directory.
+#
+# zshrc is stowed into $HOME (~/.zshrc, ~/.aliases), not ~/.config.
+# Without this line `stow . -t ~/.config` would also create ~/.config/zshrc.
+zshrc

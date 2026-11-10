@@ -13,3 +13,6 @@ glide/*
 
 # homebrew trust lock
 macos/homebrew/trust.json.lock
+
+# navi runtime log
+navi.log
