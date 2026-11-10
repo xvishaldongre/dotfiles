@@ -1,0 +1,29 @@
+# ============================================================================
+#  .zsh_plugins.txt — plugin list, read by antidote
+# ============================================================================
+# antidote turns this into ~/.cache/zsh/zsh_plugins.zsh (plain zsh), which
+# .zshrc sources. The shell never needs antidote at runtime and never clones
+# during startup.
+#
+# antidote clones each plugin into its own cache
+# (~/Library/Caches/antidote on macOS, ~/.cache/antidote on Linux) the first
+# time this list is bundled. Do not pre-clone them yourself.
+#
+# After editing this file, the next shell regenerates the load file
+# automatically (it compares mtimes). To force it:
+#     source ~/.local/share/antidote/antidote.zsh
+#     antidote bundle < ~/.zsh_plugins.txt > ~/.cache/zsh/zsh_plugins.zsh
+# ============================================================================
+
+# Completions. fpath-only; must come first so compinit picks it up.
+zsh-users/zsh-completions
+
+# Fish-like autosuggestion from history.
+zsh-users/zsh-autosuggestions
+
+# fzf-powered tab completion.
+Aloxaf/fzf-tab
+
+# Syntax highlighting. Must stay last: it wraps ZLE widgets, so anything
+# loaded after it would wrap the wrapper.
+zdharma-continuum/fast-syntax-highlighting

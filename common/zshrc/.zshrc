@@ -107,51 +107,72 @@ zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
 # ----------------------------------------------------------------------------
-# 5. Plugins — plain sourcing, no plugin manager
+# 5. Plugins — antidote (bundle only, not a runtime dependency)
 # ----------------------------------------------------------------------------
-# No znap: it cloned during startup and needed guards to stay quiet. Plain
-# sourcing is faster (0.03 s vs 0.05 s) and has no moving parts.
+# antidote turns .zsh_plugins.txt into a plain-zsh load file, once. The shell
+# sources that file directly, so antidote is NOT needed at runtime and nothing
+# is cloned during startup. Regenerate after editing .zsh_plugins.txt.
 #
-# Plugins live in ~/Repos/<owner>/<repo>. setup.sh clones them when missing.
-# $ZSH_PLUGIN_DIR overrides the location.
-: ${ZSH_PLUGIN_DIR:=$HOME/Repos}
+# antidote owns the plugin clones and keeps them in its own cache, so nothing
+# is added to a source checkout. The list holds bare owner/repo entries.
+# The list is stowed to ~/.zsh_plugins.txt from common/zshrc/. The generated
+# load file stays in the cache dir: it is machine-specific and not tracked.
+: ${ZSH_PLUGINS_TXT:=$HOME/.zsh_plugins.txt}
+: ${ZSH_PLUGINS_ZSH:=$XDG_CACHE_HOME/zsh/zsh_plugins.zsh}
+# NOTE: nested :- inside := is not parsed, so spell the default out.
+: ${XDG_DATA_HOME:=$HOME/.local/share}
+: ${ANTIDOTE_DIR:=$XDG_DATA_HOME/antidote}
 
-# _plug <owner/repo> <entry file>: source the plugin if present, else record it
-# in the missing list so the summary at the end says so.
-_plugin_missing=0
-_plug() {
-  local f="$ZSH_PLUGIN_DIR/$1/$2"
-  if [[ -r $f ]]; then
-    source $f
-  else
-    _zsh_missing+=("$1 (plugin missing)")
-    _plugin_missing=1
-  fi
-}
-
-# zsh-completions is fpath-only: no code to source, just add its compdef dir.
-[[ -d $ZSH_PLUGIN_DIR/zsh-users/zsh-completions/src ]] \
-  && fpath=($ZSH_PLUGIN_DIR/zsh-users/zsh-completions/src $fpath)
-
-# compinit must run before anything that registers completion widgets.
-# -C skips the security check on a cache we build ourselves; -d keeps the dump.
+# compinit must run before anything registers completion widgets.
 autoload -Uz compinit && compinit -C -d $XDG_CACHE_HOME/zsh/compdump 2>/dev/null
 
-# fzf-tab needs the fzf binary; without it the plugin is dead weight.
-if (( $+commands[fzf] )); then
-  _plug Aloxaf/fzf-tab fzf-tab.plugin.zsh
-else
-  _need fzf
+# Regenerate the load file only when the list is newer, or it is missing.
+# Redirect to a temp file and rename so a failure cannot leave a half-written
+# file that silently loads nothing.
+#
+# antidote writes to $ANTIDOTE_HOME and exits non-zero when it has to clone
+# (no network, or first run offline), so the result is checked before use.
+if [[ -r $ANTIDOTE_DIR/antidote.zsh ]]; then
+  if [[ ! -r $ZSH_PLUGINS_ZSH || $ZSH_PLUGINS_TXT -nt $ZSH_PLUGINS_ZSH ]]; then
+    mkdir -p ${ZSH_PLUGINS_ZSH:h}
+    if ( source $ANTIDOTE_DIR/antidote.zsh
+         antidote bundle < $ZSH_PLUGINS_TXT >| $ZSH_PLUGINS_ZSH.tmp ) 2>/dev/null \
+       && [[ -s $ZSH_PLUGINS_ZSH.tmp ]]; then
+      mv -f $ZSH_PLUGINS_ZSH.tmp $ZSH_PLUGINS_ZSH
+    else
+      rm -f $ZSH_PLUGINS_ZSH.tmp
+      _zsh_missing+=("antidote (plugin bundle failed, run setup.sh)")
+    fi
+  fi
+elif [[ ! -r $ZSH_PLUGINS_ZSH ]]; then
+  _zsh_missing+=("antidote (plugins disabled)")
 fi
 
 export ZSH_AUTOSUGGEST_USE_ASYNC=1
 export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-_plug zsh-users/zsh-autosuggestions zsh-autosuggestions.zsh
 
-# MUST be last of the plugin block (rule 2): it wraps ZLE widgets, so every
-# plugin loaded later would wrap the wrapper.
-_plug zdharma-continuum/fast-syntax-highlighting fast-syntax-highlighting.plugin.zsh
+# Sourcing the generated file is all the shell needs. Every line in it is a
+# plain fpath+= / source, so it works with antidote absent.
+#
+# The file outlives the cache it points into: a `rm -rf ~/Library/Caches` or a
+# failed first bundle leaves the load file but no plugins, which would print
+# one raw "no such file" error per plugin. antidote writes every entry under
+# $ANTIDOTE_HOME, so checking that one directory covers all of them.
+: ${ANTIDOTE_HOME:=$HOME/Library/Caches/antidote}
+[[ $OSTYPE == linux* ]] && : ${ANTIDOTE_HOME:=$HOME/.cache/antidote}
+
+if [[ -r $ZSH_PLUGINS_ZSH ]]; then
+  if [[ -d $ANTIDOTE_HOME ]]; then
+    source $ZSH_PLUGINS_ZSH
+  else
+    _zsh_missing+=("zsh plugins (antidote cache missing, run setup.sh)")
+  fi
+fi
+
+# fzf-tab needs the fzf binary; without it the plugin is dead weight.
+(( $+commands[fzf] )) || _need fzf
+
 
 # ----------------------------------------------------------------------------
 # 6. Tool init — skips silently when the tool is absent

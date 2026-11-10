@@ -126,34 +126,45 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# 3. zsh plugins
+# 3. antidote + zsh plugins
 # ---------------------------------------------------------------------------
-# .zshrc sources these directly; it no longer uses a plugin manager, so
-# nothing clones them at startup. Clone any that are missing, once.
+# antidote is installed to ~/.local/share/antidote and fetches each plugin in
+# .zsh_plugins.txt into its own cache. No ~/Repos checkout is involved.
+# .zshrc sources the generated load file directly; nothing clones at startup.
 # Set SKIP_PLUGINS=1 to skip (offline machine).
-PLUGIN_DIR=${ZSH_PLUGIN_DIR:-$HOME/Repos}
-PLUGINS=(
-  zsh-users/zsh-completions
-  zsh-users/zsh-autosuggestions
-  Aloxaf/fzf-tab
-  zdharma-continuum/fast-syntax-highlighting
-)
+ANTIDOTE_DIR=${ANTIDOTE_DIR:-$HOME/.local/share/antidote}
+ANTIDOTE_REPO=mattmc3/antidote
 
 if [[ -n ${SKIP_PLUGINS:-} ]]; then
-  echo "skipping zsh plugins (SKIP_PLUGINS=1)"
+  echo "skipping antidote and zsh plugins (SKIP_PLUGINS=1)"
 elif ! command -v git >/dev/null 2>&1; then
-  echo "note: git not found; skipping zsh plugins"
+  echo "note: git not found; skipping antidote and zsh plugins"
 else
-  for repo in "${PLUGINS[@]}"; do
-    dest=$PLUGIN_DIR/$repo
-    if [[ -d $dest ]]; then
-      continue
+  if [[ ! -d $ANTIDOTE_DIR ]]; then
+    echo "  cloning antidote to $ANTIDOTE_DIR"
+    mkdir -p "$(dirname "$ANTIDOTE_DIR")"
+    if ! git clone --depth 1 --quiet \
+        "https://github.com/$ANTIDOTE_REPO.git" "$ANTIDOTE_DIR" 2>/dev/null; then
+      echo "  warning: could not clone antidote; .zshrc will report it" >&2
     fi
-    echo "  cloning $repo"
-    if ! git clone --depth 1 --quiet "https://github.com/$repo.git" "$dest" 2>/dev/null; then
-      echo "  warning: could not clone $repo; .zshrc will report it" >&2
+  fi
+
+  # Bundle the list. This is where antidote clones any plugin it does not
+  # already have cached, so it needs network on a fresh machine.
+  plugins_txt=$HOME/.zsh_plugins.txt
+  plugins_zsh=$HOME/.cache/zsh/zsh_plugins.zsh
+  if [[ -r $ANTIDOTE_DIR/antidote.zsh && -r $plugins_txt ]]; then
+    mkdir -p "$(dirname "$plugins_zsh")"
+    echo "  bundling plugins into $plugins_zsh"
+    if zsh -c "source '$ANTIDOTE_DIR/antidote.zsh'; \
+antidote bundle < '$plugins_txt'" > "$plugins_zsh.tmp" 2>/dev/null \
+       && [[ -s $plugins_zsh.tmp ]]; then
+      mv -f "$plugins_zsh.tmp" "$plugins_zsh"
+    else
+      rm -f "$plugins_zsh.tmp"
+      echo "  warning: antidote bundle failed; .zshrc will retry" >&2
     fi
-  done
+  fi
 fi
 
 # ---------------------------------------------------------------------------
