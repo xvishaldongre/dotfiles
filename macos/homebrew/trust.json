@@ -1,6 +1,9 @@
 {
   "trustedcasks": [
+    "anomalyco/tap/hex",
     "caezium/tap/burrow",
+    "https://github.com/xvishaldongre/lab.git/lab",
+    "stablyai/orca/orca",
     "vishvavariya/notchy/notchy"
   ],
   "trustedtaps": [
