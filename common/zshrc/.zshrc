@@ -11,7 +11,9 @@
 #
 #  ORDERING RULES — break these and things fail silently:
 #    1. zstyle ':completion:*' must run BEFORE compinit (it reads the cache).
-#    2. fast-syntax-highlighting must be last, or it highlights wrongly.
+#    2. fast-syntax-highlighting must be last of the plugins, or it highlights
+#       wrongly.
+#    3. fzf must load BEFORE atuin, or fzf's ^R history widget replaces atuin's.
 #
 #  Aliases live in ~/.aliases (sourced at the bottom).
 # ============================================================================
@@ -203,10 +205,6 @@ _tool_or_need() {
   _tool "$1" "$2"
 }
 
-_tool_or_need starship 'starship init zsh --print-full-init'
-_tool_or_need zoxide   'zoxide init zsh'
-_tool_or_need atuin    'atuin init zsh --disable-up-arrow'
-
 # kubecolor is used by ~/.aliases, not here, but report it from one place.
 _need kubecolor || true
 
@@ -216,6 +214,9 @@ _need kubecolor || true
 # Ask fzf where its shell files are instead of hardcoding /opt/homebrew, which
 # is wrong on Intel macs (/usr/local) and on Linux. `fzf --zsh` is the modern
 # one-shot integration; fall back to package paths for older builds.
+#
+# ORDER: fzf first, then atuin. `fzf --zsh` binds ^R/^T, so loading it after
+# atuin silently takes Ctrl-R away from atuin's history search.
 if (( $+commands[fzf] )); then
   if fzf --zsh >/dev/null 2>&1; then
     source <(fzf --zsh)
@@ -240,6 +241,15 @@ if (( $+commands[fd] )); then
   export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
   export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 fi
+
+# ----------------------------------------------------------------------------
+# 7b. Tool init — AFTER fzf so these win the keybindings (see above)
+# ----------------------------------------------------------------------------
+# atuin takes Ctrl-R for shell history search; it must be sourced after fzf,
+# otherwise fzf's history widget silently replaces it.
+_tool_or_need starship 'starship init zsh --print-full-init'
+_tool_or_need zoxide   'zoxide init zsh'
+_tool_or_need atuin    'atuin init zsh --disable-up-arrow'
 
 # ----------------------------------------------------------------------------
 # 8. Machine-local overrides
