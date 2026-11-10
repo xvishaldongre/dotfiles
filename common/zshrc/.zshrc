@@ -159,18 +159,27 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 #
 # The file outlives the cache it points into: a `rm -rf ~/Library/Caches` or a
 # failed first bundle leaves the load file but no plugins, which would print
-# one raw "no such file" error per plugin. antidote writes every entry under
-# $ANTIDOTE_HOME, so checking that one directory covers all of them.
-: ${ANTIDOTE_HOME:=$HOME/Library/Caches/antidote}
-[[ $OSTYPE == linux* ]] && : ${ANTIDOTE_HOME:=$HOME/.cache/antidote}
+# one raw "no such file" error per plugin.
+#
+# The path cannot be guessed. antidote writes the load file with absolute
+# paths for the OS it ran on, so a file bundled on macOS points at
+# ~/Library/Caches/antidote and is useless on Linux. Read the path out of the
+# generated file itself and check that instead of assuming a default.
+_antidote_cache=
+if [[ -r $ZSH_PLUGINS_ZSH ]]; then
+  # antidote writes a literal $HOME in the generated file, so substitute it.
+  _antidote_cache=$(sed -n 's|^source "\([^"]*\)/github\.com/.*|\1|p' $ZSH_PLUGINS_ZSH 2>/dev/null | head -1)
+  _antidote_cache=${_antidote_cache/#\$HOME/$HOME}
+fi
 
 if [[ -r $ZSH_PLUGINS_ZSH ]]; then
-  if [[ -d $ANTIDOTE_HOME ]]; then
+  if [[ -n $_antidote_cache && -d $_antidote_cache ]]; then
     source $ZSH_PLUGINS_ZSH
   else
-    _zsh_missing+=("zsh plugins (antidote cache missing, run setup.sh)")
+    _zsh_missing+=("zsh plugins (cache missing, run setup.sh)")
   fi
 fi
+unset _antidote_cache
 
 # fzf-tab needs the fzf binary; without it the plugin is dead weight.
 (( $+commands[fzf] )) || _need fzf
